@@ -9,32 +9,38 @@ Students will be able to:
 - Explain the practical significance of power-law degree distributions through case studies
 
 ## Degree Distribution of Real Networks
-
+From Poisson to power-law distribution 
 ![M2L04_Fig01](imgs/M2L04_Fig01.png)
 ![M2L04_Fig02](imgs/M2L04_Fig02.png)
+more from figure 4-10 in the book. 
 ![M2L04_Fig03](imgs/M2L04_Fig03.png)
+Poisson represents just above 30*mean, while power-law goes way beyond. 
 ![M2L04_Fig04](imgs/M2L04_Fig04.png)
+![Poison vs Power-law nets](imgs/PVPLnets.png)
+Power-law network has hubs obviously, while Poison net relatively same degree for majority of nodes.
+
 
 ## Power-law Degree Distribution
 
 A <u>“power-law network”</u> has a degree distribution that is defined by the following equation:
-p_k = c * k^(-α)
+$$p_k = c \cdot k^{-α}$$
 
-In other words, the probability that the degree of a node is equal to a positive integer k is proportional to k^(-α) where α >0.
+In other words, the probability that the degree of a node is equal to a positive integer k is proportional to $k^{-α}$ where __α >0__.
 
-The proportionality coefficient c is calculated so that the sum of all degree probabilities is equal to one for a given α and a given minimum degree k_min (the minimum degree may not always be 1). 
+The proportionality coefficient c is calculated so that the sum of all degree probabilities is equal to one _for a given α and a given minimum degree $k_{min}$ (the minimum degree may not always be 1)_. 
 ![M2L04_01](imgs/M2L04_01.png)
 
-The calculation of c can be simplified if we approximate the discrete degree distribution with a continuous distribution:
+The calculation of c can be simplified if we _approximate the discrete degree distribution with a continuous distribution_ (otherwise, by definition, degree k is discrete):
 ![M2L04_02](imgs/M2L04_02.png)
+(_holds only for $\alpha>1$_)
 
-Note that the exponent of the CCDF function is α - 1, instead of α. So, if the probability that a node has degree k decays with a power-law exponent of 3, the probability that we see nodes with degree greater than k decays with an exponent of 2.
+<u>Note that the exponent of the CCDF function is α - 1, instead of α.</u> So, if the probability that a node has degree k decays with a power-law exponent of 3, the probability that we see nodes with degree greater than k decays with an exponent of 2.
 
 For directed networks, we can have that the in-degree or the out-degree or both follow a power-law distribution (with potentially different exponents).
 
 **Food for Thought**
-- **Prompt 1:** Repeat the derivations given here in more detail. 
-- **Prompt 2:** Can you think of a network with n nodes in which all nodes have about the same in-degree but the out-degrees are highly skewed?​
+- <s>**Prompt 1:** Repeat the derivations given here in more detail.</s> 
+- **Prompt 2:** Can you think of a network with n nodes in which all nodes have about the same in-degree but the out-degrees are highly skewed?​ -> (directed star-net?)
 
 ## The Role of the Exponent of a Power-law Distribution 
 What is the mean and the variance of a power-law degree distribution?
@@ -49,11 +55,12 @@ where c is the proportionality coefficient we derived in the previous page.
 If we rely again on the continuous k approximation, the previous summation becomes an integral that we can easily calculate:
 ![M2L04_04](imgs/M2L04_04.png)
 
-Note that this integral diverges to infinity if m - α + 1 >= 0 and so, the m’th moment of a power-law degree distribution is well defined (finite) if m < α - 1. 
+Note that this integral diverges to infinity if __m - α + 1 >= 0__ and so, the m’th moment of a power-law degree distribution is well defined (finite) if 
+$$m < α - 1$$
 
-Consequently, the mean (first moment) exists if α > 2 and the variance (second moment minus the square of the mean) exists if α > 3.  
+_Consequently, the mean (first moment) exists if α > 2 and the variance (second moment minus the square of the mean) exists if α > 3._  
 
-Of course the variance cannot be “infinite” if the network has a finite number of nodes (i.e., k never ”extends to infinity” in real networks). For many real-world networks however, the exponent α is estimated to be between 2 and 3, which means that even though the distribution has a well-defined average degree, the variability of the degree across different nodes is extremely large.
+_Of course the variance cannot be “infinite” if the network has a finite number of nodes (i.e., k never ”extends to infinity” in real networks). For many real-world networks however, the exponent α is estimated to be between 2 and 3,_ which means that even though the distribution has a well-defined average degree, **the variability of the degree across different nodes is extremely large**.
 
 ![M2L04_Fig05](imgs/M2L04_Fig05.jpg)
 *Standard Deviation is Large in Real Networks, Figure 4.8 from networksciencebook.com by Albert-László Barabási*
@@ -64,7 +71,7 @@ To illustrate this last point, let’s look at the relation between the average 
 Note that many real-world networks have much higher σ than that --  in some cases σ is even an order of magnitude larger than k_. In the case of the WWW in-degree distribution, for example, the average in-degree is only around 4 while the standard deviation of the in-degree is almost 40!
 
 **Food for Thought**
-- Prompt: repeat the derivation for the m’th moment outlined above in more detail. 
+- <s>Prompt: repeat the derivation for the m’th moment outlined above in more detail</s>. 
 
 
 ## How to Check if a Network Has Power-law Degree Distribution
@@ -74,10 +81,12 @@ Note that many real-world networks have much higher σ than that --  in some cas
 
 In practice, the degree distribution may not follow an ideal power-law distribution throughout the entire range of degrees. In other words, the empirical degree distribution may not be a perfect straight-line when plotted in log-log scale. Instead, it may look similar to the left plot at this page. There are two important points about this distribution:
 
-- a) For lower values of k, we observe a “low-degree saturation” that **decreases the probability of seeing low-degree nodes** compared to an ideal power-law. If this saturation effect takes place mostly for nodes with degree less than k_sat, we can capture  this effect by considering a modified power-law expression: (k + k_sat)^(-α) Do you see why adding the term k_sat causes a decrease in the probability of low-degree nodes (but it has a minor effect on high-degree nodes)? 
-- b) For very high values of k there is again a deviation from the ideal power-law form. The reason is that in practice there are always some “structural” effects that **limit the maximum degree** that a node can have. For example, in a router-level computer network, the maximum degree is limited by the maximum number of interfaces that a router can have due to hardware or cost constraints. To capture such a high-degree cutoff point, we often need to constrain the upper-tail of the degree distribution up to a value k_cut. This value is determined by practical connectivity constraints for the network we analyze. 
+- a) For lower values of k, we observe a “low-degree saturation” that **decreases the probability of seeing low-degree nodes** compared to an ideal power-law. If this saturation effect takes place mostly for nodes with degree less than $k_{sat}$, we can capture  this effect by considering a modified power-law expression: 
+    $$(k + k_{sat})^{-α}$$
+    Do you see why adding the term $k_{sat}$ causes a decrease in the probability of low-degree nodes (but it has a minor effect on high-degree nodes)? --> (move distribution rightwards?)
+- b) For very high values of k there is again a deviation from the ideal power-law form. The reason is that in practice there are always some **“structural” effects that limit the maximum degree** that a node can have. For example, in a router-level computer network, the maximum degree is limited by the maximum number of interfaces that a router can have due to hardware or cost constraints. To capture such a high-degree cutoff point, we often need to constrain the upper-tail of the degree distribution up to a value $k_{cut}$. This value is determined by practical connectivity constraints for the network we analyze. 
 
-In summary, when we want to check if a network follows a power-law degree distribution, we  need to consider whether that distribution drops almost linearly with k in a range between k_sat and k_cut. 
+In summary, when we want to check if a network follows a power-law degree distribution, we  need to consider whether that distribution drops almost linearly with k in a range between $k_{sat}$ and $k_{cut}$. 
 
 Another approach, that addresses the low-degree saturation effect, is to “rescale” the distribution so that we examine the behavior of the degree probability with (k +k_sat) (instead of k) – still considering the range up to k_cut. This rescaling approach is shown at the plot at the right. 
 
@@ -96,18 +105,18 @@ This plot visualizes the same distribution, ![M2L04_06](imgs/M2L04_06.png)i n fo
 
 **The four plots are:**
 - linear-linear scale. This is clearly a bad way to plot a power-law distribution. 
-- log-log scale but with linear binning (the bin width of the histogram increases linearly with k). This is also not an appropriate approach because the bins of the histogram for high values of k are quite narrow and they often include 0 or 1 measurements, creating the “plateau” that you see at the tail of the distribution. 
+- log-log scale but with linear binning (the bin width of the histogram increases linearly with k). This is also not an appropriate approach because the bins of the histogram for high values of k are quite narrow and they often include 0 or 1 measurements, creating the _“plateau”_ that you see at the tail of the distribution. 
 - log-log scale but with logarithmic binning (the bin width of the histogram increases exponentially with k). Note how the tail of the distribution drops almost linearly with k when the degree is higher than about 50-100. A potential issue with this approach is that we still need to figure out how fast to increase the bin width with k.
-- the Complementary Cumulative Distribution Function (C-CDF), which shows the probability P_k that the degree is higher or equal than k (all previous plots show the probability p_k that the degree is equal to k). This is the best approach because we do not need to determine an appropriate sequence of bin-widths. Please note however that the slope of the C-CDF is not the same as the slope of the degree distribution. In this example, α = 2.5 and so the exponent of the C-CDF is 1.5.
+- the Complementary Cumulative Distribution Function (C-CDF), which shows the probability $P_k$ that the degree is higher or equal than k (all previous plots show the probability $p_k$ that the degree is equal to k). This is the __best__ approach because we do not need to determine an appropriate sequence of bin-widths. Please note however that the slope of the C-CDF is not the same as the slope of the degree distribution. In this example, α = 2.5 and so the exponent of the C-CDF is 1.5.
 
 ## Scale-free Nature of Power-law Networks
 
 ![M2L04_Fig08](imgs/M2L04_Fig08.jpeg)
 *Lack of an Internal Scale, figure 4.7 from networksciencebook.com by Albert-László Barabási*
 
-One of the first things we learn in statistics is that the Normal distribution describes quite accurately many random variables (due to the Central Limit Theorem), and that according to that distribution 99.8% of the data are expected to fall within 3 standard deviations from the average.
+One of the first things we learn in statistics is that _the Normal distribution describes quite accurately many random variables (due to the Central Limit Theorem)_, and that according to that distribution 99.8% of the data are expected to fall within 3 standard deviations from the average.
 
-Qualitatively, this is true for all distributions with exponentially fast decreasing tails, which includes the Poisson distribution and many others. In networks that have such degree distributions, the average degree represents the **“typical scale”** of the network, in terms of the number of connections per node (see green distribution at the visualization). 
+Qualitatively, this is true for all distributions with _exponentially fast decreasing tails_, which includes the Poisson distribution and many others. In networks that have such degree distributions, _the average degree represents the **“typical scale”** of the network, in terms of the number of connections per node_ (see green distribution at the visualization). 
 
 On the other hand, a power-law degree distribution with exponent 2 < α < 3 has finite mean but infinite variance (any higher moments, such as skewness are also infinite). The infinite variance of this statistical distribution means that we cannot expect the data to fall close to the mean. On the contrary, the mean (the average node degree in our case) can be a rather uninformative statistic in the sense that a large fraction of values can be lower than the mean, and that many values can be much higher than the mean (see purple distribution  at the visualization). 
  
@@ -115,9 +124,10 @@ For this reason, people often refer to power-law networks as **“scale-free”*
 
 ## The Maximum Degree in a Power-law Network
 
-Let us now derive an expression for the maximum degree we can expect to see in a power-law network with  nodes, and to compare that with the corresponding maximum degree we can expect to get from a network in which the degree distribution decays exponentially fast with the degree . Recall that the Poisson distribution of  networks decays even faster than exponential distribution.
+Let us now derive an expression for the maximum degree we can expect to see in a power-law network with  nodes, and to compare that with the corresponding maximum degree we can expect to get from a network in which the degree distribution decays exponentially fast with the degree . _Recall that the Poisson distribution of  networks decays even faster than exponential distribution_.
 ![M2L04_Fig09](imgs/M2L04_Fig09.png)
-This means that the maximum degree increases very slowly (logarithmically) with the network size n, when the degree distribution decays exponentially fast with k. 
+$$k_{max} = k_{min} + \overline{k}\cdot ln(n)$$
+This means that the <u>maximum degree increases very slowly (logarithmically) with the network size n, when the degree distribution decays exponentially fast with k</u>. 
 
 
 Let us now repeat these derivations but for a power-law network with the same minimum degree k_min and an exponent α.
@@ -126,7 +136,7 @@ This means that the **maximum degree in a power-law network increases as a power
 
 **In the more extreme case that α = 2 the maximum degree increases linearly with n!**
 
-To put these numbers in perspective, consider a network with one million nodes, and an average degree of k_ = 3. If the network follows the exponential degree distribution, the maximum expected degree is only about 10 – not much larger than the average degree.  
+To put these numbers in perspective, consider a network with one million nodes, and an average degree of $\overline{k} = 3$. If the network follows the exponential degree distribution, the maximum expected degree is only about 10 – not much larger than the average degree.  
 
 If the network follows the power-law degree distribution with exponent α = 2.5 (recall that this is a typical value for many real-world networks), we get that the maximum degree is about 10,000!
 
@@ -135,10 +145,10 @@ If the network follows the power-law degree distribution with exponent α = 2.5 
 
 The example above clearly illustrates a major difference between exponential and power-law networks: the latter have nodes with a much greater number of connections than the average node – we typically refer to those nodes as **Hubs**. 
 
-The visualization at this page illustrates the difference between exponential and power-law networks focusing on the presence of hubs. The network of major interstate highways in the US follows a Poisson distribution, without any nodes (cities) that have a much larger degree than the average. On the other hand, the network of direct flights between the major US cities follows a power-law degree distribution and there are obvious hubs, such as the airports in Atlanta, Chicago or New York city. 
+The visualization at this page illustrates the difference between exponential and power-law networks focusing on the presence of hubs. The network of major __interstate highways__ in the US follows a Poisson distribution, without any nodes (cities) that have a much larger degree than the average. On the other hand, the network of __direct flights__ between the major US cities follows a power-law degree distribution and there are obvious hubs, such as the airports in Atlanta, Chicago or New York city. 
 
 **Food for Thought**
-Derive the integrals shown in this page yourself.
+<s>Derive the integrals shown in this page yourself.</s>
 
 
 ## Random Failures and Targeted Attacks in Power-law Networks
@@ -160,7 +170,7 @@ In terms of random failures, the power-law degree network is much more robust th
 
 The situation is very different from targeted attacks: power-law networks are very sensitive to those because an attacker would first delete the hub nodes, causing a disintegration of the largest connected component after f exceeds a critical threshold (around 0.15 in this example). That critical threshold is higher for Poisson networks because they do not have hub nodes. 
 
-In summary, power-law networks are more robust to random failures than Poisson networks – but they are also more sensitive to targeted attacks than Poisson networks. 
+<u>In summary, power-law networks are more robust to random failures than Poisson networks – but they are also more sensitive to targeted attacks than Poisson networks</u>. 
 
 ## Degree-preserving Randomization
 
@@ -203,12 +213,16 @@ Suppose that a real-world communication network with one thousand nodes has a po
 
 How can we create a synthetic network that has a given degree distribution? This is a central question in network modeling. 
 
-A general way to create synthetic networks with a specified degree distribution p_k is the “configuration model”. The inputs to this model is a) the desired number of nodes n, and b) the degree ki of each node i . The collection of all degrees specifies the degree distribution of the synthetic network. 
+A general way to create synthetic networks with a specified degree distribution p_k is the “configuration model”. The inputs to this model is 
+- a) the desired number of nodes n, and 
+- b) the degree ki of each node i .
+   
+The collection of all degrees specifies the degree distribution of the synthetic network. 
 
 ![M2L04_Fig16](imgs/M2L04_Fig16.jpeg)
 *The Configuration Model, Figure 4.15 from networksciencebook.com by Albert-László Barabási*
 
-The configuration model starts by creating the n nodes: node i has ki available “edge stubs”. Then, we keep selecting randomly two available stubs and connect them together with an edge, until there are no available stubs. The process is guaranteed to cover all stubs as long as the sum of all node degrees is even.
+The configuration model starts by creating the n nodes: _node i has ki available “edge stubs”. Then, we keep selecting randomly two available stubs and connect them together with an edge, until there are no available stubs_. _The process is guaranteed to cover all stubs as long as the sum of all node degrees is even._
 
 The configuration model process is random and so it creates different networks each time, allowing us to produce an ensemble of networks with the given degree distribution. 
 
@@ -217,7 +231,7 @@ Additionally, note that the constructed edges may form self-loops (connecting a 
 The visualization of this page shows three different networks with n=4 that can result from the configuration model, given the same degree distribution. Note that there are more than three different networks that could include self loops and multi-edges - can you find the rest?
 
 **Food for Thought**
-What is the probability that the configuration model will connect two nodes of degree ki and kj? 
+What is the probability that the configuration model will connect two nodes of degree ki and kj? --> (???)
 
 ## Preferential Attachment Model
 
@@ -243,7 +257,7 @@ The degree distribution at the plot below refers to a network that was created w
 ![M2L04_Fig18](imgs/M2L04_Fig18.jpeg)
 *The Degree Distribution, Figure 5.4 from networksciencebook.com by Albert-László Barabási*
 
-The main value of the preferential attachment model is that it suggests that power-law networks can be generated through the combined effect of two mechanisms: growth and preferential connecting to nodes with a higher degree. Either of these two mechanisms on its own would not be sufficient to produce power-law networks.
+The main value of the preferential attachment model is that it suggests that power-law networks can be generated through the combined effect of two mechanisms: __growth and preferential connecting to nodes with a higher degree__. Either of these two mechanisms on its own would not be sufficient to produce power-law networks.
  
 
 **Food for Thought**
@@ -255,7 +269,7 @@ How would you modify the preferential attachment model so that you get an expone
 
 Another very simple generating model that also creates power-law networks with exponent 3 is the “link selection” model.
 
-Suppose that each time we introduce a new node, we select a random link and the new node connects to one of the two end-points of that link (randomly chosen). In other words, the new node connects to a randomly selected edge-stub (see visualization).
+Suppose that each time we introduce a new node, we select a random link and the new node connects to _one of the two end-points of that link (randomly chosen)_. In other words, the new node connects to a randomly selected **edge-stub** (see visualization).
 
 In this model, the probability that the new node connects to a node of degree k is proportional to k (because the node of degree-k has k stubs). But this is exactly the same condition with the preferential attachment model: a linear relation between the degree k of an existing node and the probability that the new node connects to that existing node of degree-k. 
 
@@ -274,19 +288,21 @@ The plot at the left is the C–CDF for the number of partners of each individua
 
 The plot at the right is the corresponding C-CDF but this time for the entire lifetime of each individual. As expected, the range of the distribution now extends to a wider range (up to 100 partners for women and 1000 for men). Note the low-degree saturation effect we discussed earlier in this lesson, especially for less than 10 partners. The exponent of the C-CDF distributions is α_tot = 2.1 ± 0.3 for women (in the range k_tot > 20), and α_tot = 1.6 ± 0.3 for men (in the range 20 k_tot < 400). Estimates for females and males agree within statistical uncertainty. Note that these exponents refer to the C-CDF – so the corresponding exponents for the degree distributions would be, on average, 3.1 for women and 2.6 for men.
 
-These exponent values suggest that, at least for men, the corresponding network of sexual contacts would have a power-law distribution with very high variability (theoretically, “infinite variance”). The distribution also shows the presence of hubs: individuals with hundreds of partners during their lifetime. The wide variability in this distribution justifies targeted intervention approaches that aim to identify the “hub individuals” and provide them with additional information, resources (such as condoms or treatment), and when available, vaccination.
+These exponent values suggest that, _at least for men, the corresponding network of sexual contacts would have a power-law distribution with very high variability (theoretically, “infinite variance”)_ (for women, as $\alpha>3$, finite variance). The distribution also shows the presence of hubs: individuals with hundreds of partners during their lifetime. The wide variability in this distribution justifies targeted intervention approaches that aim to identify the “hub individuals” and provide them with additional information, resources (such as condoms or treatment), and when available, vaccination.
 
 ## Case Studies: Superspreaders
 
 **Superspreaders in SARS epidemic**
-![M2L04_Fig21](imgs/M2L04_Fig21.jpeg)
+
+![M2L04_Fig21](imgs/M2L04_Fig21.png)
+
 The SARS (Severa Acute Respiratory Syndrome) was an epidemic back in 2002-3. It infected 8000 people in 23 countries and it caused about 800 deaths.
 
 The plot shown here shows how the infections progressed from a single individual (labeled as patient-1) to many others. Such plots result from a process known as “contact tracing” – finding out the chain of successive infections in a population.
 
 It is important to note the presence of a few hub nodes, referred to as **“superspreaders”** in the context of epidemics. The superspreaders are labeled with an integer identifier in this plot. The superspreader 1, for example, infected directly about 20 individuals.
 
-The presence of superspreaders emphasizes the role of degree heterogeneity in network phenomena such as epidemics. If the infection network was more **“Poisson-like”**, it would not have superspreaders and the total number of infected individuals would be considerably smaller.
+The presence of superspreaders emphasizes the role of **degree heterogeneity** in network phenomena such as epidemics. If the infection network was more **“Poisson-like”**, it would not have superspreaders and the total number of infected individuals would be considerably smaller.
 
 Source: [Super-spreaders in infectious diseases Richard A.Stein](https://www.sciencedirect.com/science/article/pii/S1201971211000245), International Journal of Infectious Diseases, August 2011.
 
@@ -305,3 +321,9 @@ SSEs have been observed in practically every epidemic – and they have major co
 
 Source: Cellular Superspreaders: [An Epidemiological Perspective on HIV Infection inside the Body Kristina Talbert-Slagle et al., 2014](https://doi.org/10.1371/journal.ppat.1004092
 )
+
+## Lesson Summary
+
+The goal of this module was to introduce you to real networks, their degree distributions and the differences they have with random networks. From there we explored the Power-law degree distribution, how to test for it, methods of plotting it, and the special properties of networks that have this distribution. These properties include the maximum degree, the robustness of these networks  reason that power-law network are sometimes also referred to as scale-free networks. Additionally, we introduced you to several models for generating real networks such as the configuration model, the link-selection model and the preferential attachment model.
+
+Because real networks with power-law degree distributions are the ones that occur in nature, we will continue to build upon these concepts further in the remainder of the modules as we explore concepts such as sociological networks, communities within networks, and the dynamics of contagion spreading withing a network.
