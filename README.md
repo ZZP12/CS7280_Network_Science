@@ -1,6 +1,6 @@
 # OMS CS7280: [Network Science](https://omscs.gatech.edu/cs-7280-network-science)
-> FA2022 | Yolanda's notes <br>
-> Aug 23, 2022 - Dec 15, 2022
+> Adapted from FA2022 | Yolanda's notes <br>
+with minor corrections 
 
 # Resources
 - [Canvas](https://gatech.instructure.com/courses/265324)
