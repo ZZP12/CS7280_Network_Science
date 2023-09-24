@@ -23,9 +23,9 @@ Students will be able to:
 
 The degree distribution of a given network shows the fraction of nodes with degree k. 
 
-If we think of networks as random samples from an ensemble of graphs, we can think of p_k as the probability that a node has degree k, for k>=0. 
+If we think of networks as random samples from an ensemble of graphs, we can think of $p_k$ as the probability that a node has degree k, for k>=0. 
 
-The network in this visualization has six nodes and the plot shows the empirical probability density function (which is a histogram) for the probability p_k. 
+The network in this visualization has six nodes and the plot shows the empirical probability density function (which is a histogram) for the probability $p_k$. 
 
 ![M2L03_Fig02](imgs/M2L03_Fig02.png)
 
@@ -35,13 +35,11 @@ The above formulas show the moments that we will mostly use in this course: the 
 
 ### Complementary Cumulative Distribution Function
 
-![M2L03_Fig03](imgs/M2L03_Fig03.png)
-
 For larger networks, we usually do not show the empirical probability density function pk.  Instead, we show the probability that the degree is at least k, for any k>=0.  
 
 ![M2L03_Fig04](imgs/M2L03_Fig04.png)
 
-This is referred to as the Complementary Cumulative Distribution Function (denoted as C-CDF).  Note that P_k_ = Prob[degree>=k] is the sum of all px values for x>=k. 
+This is referred to as the Complementary Cumulative Distribution Function (denoted as C-CDF).  Note that $\bar{P_k} = Prob[degree>=k]$ is the sum of all px values for x>=k. 
 
 ## Two Special Degree Distributions
 
@@ -63,7 +61,7 @@ On the other hand, in many networks, the C-CDF decays with a power-law of k. For
 
 
 ## Friendship Paradox
-
+![M2L03_Fig03](imgs/Friendship_Paradox.png)
 ### The Probability that a Random Edge Connects to a Node of Degree k 
 
 Let's start by deriving a simple fact that we will use repeatedly in this course.  
@@ -72,12 +70,13 @@ Suppose that we pick a random edge in the network – and we randomly select one
 
 This is easy to answer when the degrees of connected nodes are independent.  
 
-q_k = (number of nodes of degree k) x (probability an edge connects to a specific node of degree k)
+$q_k$ = (number of nodes of degree k) x (probability an edge connects to a specific node of degree k) = $(np_k)(\frac{k}{2m})=\frac{kp_k}{2m/n}=\frac{kp_k}{\bar{k}}$
+
 ![M2L03_01](imgs/M2L03_01.png)
 
 Note that the probability that the randomly chosen stub connects to a node of degree k is proportional to both k and the probability that a node has degree k.  
 
-This means that, for nodes with degree k > k_, it is more likely to sample one of their stubs than the nodes themselves. The opposite is true for nodes with degree  k < k_.
+This means that, for nodes with degree $k > \bar{k}$, it is more likely to sample one of their stubs than the nodes themselves. The opposite is true for nodes with degree  $k < \bar{k}$.
 
 ![M2L03_Fig06](imgs/M2L03_Fig06.png)
 
@@ -85,14 +84,14 @@ Based on the previous derivation, we can now ask: what is the expected value of 
 
 Note that we are not asking for the average degree of a node. Instead, we are interested in the average degree of a node's neighbor.  
 
-This is the same as the expected value of the degree of the node we select if we sample a random edge stub.  Lets denote this expected value as k_nn_.
+This is the same as the expected value of the degree of the node we select if we sample a random edge stub.  Lets denote this expected value as $\overline{k_{nn}}$.
 
 The derivation is as follows.
 ![M2L03_02](imgs/M2L03_02.png)
 
 We can now give a mathematical statement of the friendship paradox: as long as the variance of the degree distribution is not zero, and given our assumption that neighboring nodes have independent degrees, the average neighbor’s degree is higher than the average node degree. 
 
-The difference between the two expected values (i.e., σ_k^2 / k_) increases with the the variability of the degree distribution.  
+The difference between the two expected values (i.e., $σ_k^2 / \bar{k}$) increases with the the variability of the degree distribution.  
 
 **Food for Thought**
 Can you explain in an intuitive way why the average neighbor’s degree is larger than the average node degree, as long as the degree variance is not zero?
@@ -126,7 +125,7 @@ The degree distribution of the G(n,p) model follows the **Binomial(n-1,p)** dist
 
 Note that the G(n,p) model does not necessarily create a connected network – we will return to this point a bit later. 
 
-Also, in the G(n,p) model there are no correlations between the degrees of neighboring nodes. So, if we return to the friendship paradox, the average neighbor degree at a G(n,p) network is k_nn_ = k_ + (1 -p) (using the Binomial distribution) -- or k_nn_ = k_ + 1 (using the Poisson approximation when p << 1) .
+Also, in the G(n,p) model there are no correlations between the degrees of neighboring nodes. So, if we return to the friendship paradox, the average neighbor degree at a G(n,p) network is $\overline{k_{nn}} = \bar{k} + (1 -p)$ (using the Binomial distribution) -- or $\overline{k_{nn}} = \bar{k} + 1$ (using the Poisson approximation when p << 1) .
 
 In other words, if we reach a node v by following an edge from another node, the expected value of v’s degree is one more than the average node degree. 
 
@@ -174,9 +173,10 @@ We can derive the relation between p and the size of the LCC as follows:
 
 Suppose that S is the probability that a node belongs in the LCC. Another way to think of S is as the expected value of the fraction of network nodes that belong in the LCC.  
 
-Then, S_ = 1 - S is the probability that a node does NOT belong in the LCC.  
+Then, $\overline{S} = 1 - S$ is the probability that a node does NOT belong in the LCC.  
 
-That probability can be written as
+That probability can be written as $\overline{S}=((1-p) + p\cdot\overline{S})^{n-1}$
+
 ![M2L03_04](imgs/M2L03_04.png)
 
 The first term refers to the case that a node v is not connected to another node, while the second term refers to the case that v is connected to another node that is not in the LCC. 
@@ -184,7 +184,7 @@ The first term refers to the case that a node v is not connected to another node
  Since, p = k_ / (n-1), the last equation can be written as:
 ![M2L03_05](imgs/M2L03_05.png)
 
-The visualization shows the relation between the left and right sides of the previous equation, i.e., the relation between S and 1 - e^(-k_*S).
+The visualization shows the relation between the left and right sides of the previous equation, i.e., the relation between S and $1 - e^{(-\overline{k}*S)}$.
 
 The equality is true when the function y = 1 - e^(-k_*S) crosses the diagonal x=y line.  
 
@@ -265,7 +265,7 @@ The network at the right shows an example of a network in which small-degree nod
 
 One way to quantify the degree correlations in a network is by modeling (i.e., approximating) the relationship between the average nearest neighbor degree k_nn(k) and the degree k with a power-law of the form:
 
-k_nn(k) \~= a * k^μ
+$$k_{nn}(k) ~= a * k^μ$$
 
 Then, we can estimate the exponent  from the data.  
 

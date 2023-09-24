@@ -17,7 +17,7 @@ Students will be able to:
 
 ## Power-law Degree Distribution
 
-A “power-law network” has a degree distribution that is defined by the following equation:
+A <u>“power-law network”</u> has a degree distribution that is defined by the following equation:
 p_k = c * k^(-α)
 
 In other words, the probability that the degree of a node is equal to a positive integer k is proportional to k^(-α) where α >0.
