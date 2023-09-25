@@ -20,7 +20,7 @@ Explain the significance of “small-world” networks through case studies
 
 In social networks, it is often the case that if A is a friend of B and C, then B and C are also likely to be friends with each other. In other words, A, B, and C form a **“friendship triangle”**. The presence of such triangles is quite common in almost all real-world networks.
 
-To quantify the presence of such triangles of connected nodes, we can use the **Clustering Coefficient**. For a node-i with at least two neighbors, this metric is defined as the fraction of its neighbors’ pairs that are connected.
+To quantify the presence of such triangles of connected nodes, we can use the **Clustering Coefficient**. For a node-i with at least two neighbors, this metric is defined as __the fraction of its neighbors’ pairs that are connected__.
 
 Mathematically, suppose that the network is undirected, unweighted, and described by an adjacency matrix A. The clustering coefficient for node-i is defined as:
 
@@ -30,9 +30,9 @@ The denominator at the left fraction is the number of distinct neighbor pairs of
 
 ![M2L05_Fig01](imgs/M2L05_Fig01.jpeg)
 
-If the degree of node-i is one or zero, the clustering coefficient is not well-defined.
+If the degree of node-i is one or zero, the clustering coefficient is _not well-defined_.
 
-The visualization at the left shows three examples in which node-i is the purple node. As you see, the clustering coefficient quantifies the extent to which node-i and its direct neighbors form an interconnected cluster. If they form a clique the clustering coefficient is maximized (one) – while if they form a star topology with node-i at the center the clustering coefficient is minimized (zero). 
+The visualization at the left shows three examples in which node-i is the purple node. As you see, the clustering coefficient quantifies the extent to which node-i and its direct neighbors form an interconnected cluster. If they form a __clique__ the clustering coefficient is maximized (one) – while if they form a __star topology__ with node-i at the center the clustering coefficient is minimized (zero). 
 
 We often want to describe the clustering coefficient not only of one node in the network – but of all nodes. One way to do so is with the plot at the right.
 
@@ -54,10 +54,10 @@ A better metric, however, is to calculate the **Transitivity (or global clusteri
 Mathematically, the transitivity is defined as:
 ![M2L05_02](imgs/M2L05_02.png)
 
-A connected triplet is an ordered set of three nodes ABC such that A connects to B and B connects to C. For example, an A, B, C triangle corresponds to three triplets, ABC, BCA, and CAB. In contrast, a chain of connected nodes A, B, C, in which B connects to A and C, but A does not link to C, forms an open triplet ABC. The factor three in the previous equation is needed because each triangle is counted three times in the triplet count.
+A connected triplet is an **ordered** set of three nodes ABC such that A connects to B and B connects to C. For example, an A, B, C triangle corresponds to three triplets, ABC, BCA, and CAB. In contrast, a chain of connected nodes A, B, C, in which B connects to A and C, but A does not link to C, forms an open triplet ABC. The factor three in the previous equation is needed because each triangle is counted three times in the triplet count.
 
 **Food For Thought**
-- Note that the Transitivity and the Average Clustering Coefficient are two different metrics. They may often be close but there are also some extreme cases in which the two metrics give very different answers. To see that consider a network in which two nodes A and B are connected to each other as well as to every other node. There are no other links. The total number of nodes is n. What would be the transitivity and average clustering coefficient in this case (you can simplify by assuming that n is quite large)?
+- Note that the Transitivity and the Average Clustering Coefficient are two different metrics. They may often be close but there are also some extreme cases in which the two metrics give very different answers. To see that consider a network in which two nodes A and B are connected to each other as well as to every other node. There are no other links. The total number of nodes is n. What would be the transitivity and average clustering coefficient in this case (you can simplify by assuming that n is quite large)? --> average clustering coefficient = 1; while transitivity = $\frac{(n-2)\cdot 3}{(n-2)\cdot 3 + 2\cdot C_{n-2}^2} = \frac{3}{n}$???.
 
 ## Clustering in Weighted Networks
 
@@ -88,16 +88,17 @@ How large is the expected clustering coefficient at a random ER network (i.e., a
 
 Recall that any two nodes in that model are connected with the same probability p. So, the probability that a connected triplet A-B-C forms a triangle (A-B-C-A) is also p. Thus, the expected value of the clustering coefficient for any node with more than one connection is p. Similarly, the transitivity (and the average clustering coefficient) of the whole network is also expected to be p.
 
+![M2L05_Fig05](imgs/M2L05_Fig05.jpeg)
+
 In G(n,p), the average degree is k_ = p\*(n-1). So, if the average degree remains constant, we expect p to drop inversely proportional with n as the network size grows. This means that if real networks follow the G(n,p) model, we would see a decreasing trend between the clustering coefficient and the network size.
 
 This is not the case with real networks however. The plot shows the average clustering coefficient, normalized by the average degree, as a function of the network size N. In the G(N,p) model, this normalized version of the average clustering coefficient should be equal to 1/N (shown as a green line in the plot). The various colored dots show the clustering coefficient for several real-world networks that appear in Table 3.2 of your textbook. These networks have widely different sizes, ranging from a thousand nodes to almost a million. Note that their clustering coefficient does not seem to get smaller as the network size increases.
 
-The main message here is that the G(n,p) model predicts negligible clustering, especially for large and sparse networks. On the contrary, real-world networks have a much higher clustering coefficient than G(n,p) and its magnitude does not seem to depend on the network size.
+The main message here is that the G(n,p) model __predicts negligible clustering, especially for large and sparse networks__. On the contrary, real-world networks have __a much higher clustering coefficient than G(n,p)__ and its magnitude does not seem to depend on the network size.
 
-![M2L05_Fig05](imgs/M2L05_Fig05.jpeg)
 
 **Food For Thought**
-- The transitivity (and clustering coefficient) focuses on a microscale property of a network, in the sense that it shows how likely it is that connected triplets form triangles. How would you explain that the value of this metric does not seem to depend on the size of the overall network in practice? What does that imply about the mechanisms that guide the formation of such networks?
+- The transitivity (and clustering coefficient) focuses on a microscale property of a network, in the sense that it shows how likely it is that connected triplets form triangles. How would you explain that the value of this metric does not seem to depend on the size of the overall network in practice? What does that imply about the mechanisms that guide the formation of such networks? --> new nodes sparsely connect to existing nodes, and rarely connect to hubs???
 
 ## Clustering in Regular Networks
 
@@ -112,29 +113,29 @@ Note that this does not depend on the network size. Additionally, as c increases
 ![M2L05_Fig06](imgs/M2L05_Fig06.png)
 
 **Food For Thought**
-- Prove the previous formula for the transitivity coefficient.
+- Prove the previous formula for the transitivity coefficient. --> ???
 
 ## Diameter, Characteristic Path Length, and Network Efficiency
 
 The notion of small-world networks depends on two concepts: how clustered the network is (covered in the previous pages) and how short the paths between network nodes are – that we cover next.
 
-As you recall from Lesson-2 if a network forms a connected component we can compute the shortest-path length  between any two nodes i and j. One way to summarize these distances for the entire network is to simply take the average such distance across all distinct node pairs. This metric L is referred to as Average (shortest) Path Length (APL) or Characteristic Path Length (CPL) of the network. For an undirected and connected network of n nodes, we define L as:
+As you recall from Lesson-2 if a network forms a connected component we can compute the shortest-path length  between any two nodes i and j. One way to summarize these distances for the entire network is to simply take the average such distance across all distinct node pairs. This metric L is referred to as __Average (shortest) Path Length (APL)__ or __Characteristic Path Length (CPL)__ of the network. For an undirected and connected network of n nodes, we define L as:
 
 ![M2L05_06](imgs/M2L05_06.png)
 
-A related metric is the harmonic mean of the shortest-path lengths across all distinct node pairs, referred to as the efficiency of the network:
+A related metric is the __harmonic__ mean of the shortest-path lengths across all distinct node pairs, referred to as the __efficiency__ of the network:
 
 ![M2L05_07](imgs/M2L05_07.png)
 
 The efficiency varies between 0 and 1.
 
-Another metric that is often used to quantify the distance between network nodes is the diameter, which is defined as the maximum shortest-path distance across all node pairs:
+Another metric that is often used to quantify the distance between network nodes is the __diameter__, which is defined as the maximum shortest-path distance across all node pairs:
 
 ![M2L05_08](imgs/M2L05_08.png)
 
 A more informative description is the distribution of the shortest-path lengths across all distinct node pairs, as shown in the visualizations below.
 
-![M2L05_Fig07](imgs/M2L05_Fig07.png)
+![M2L05_Fig07](imgs/protein_FB.png)
 
 At the left, the corresponding network is the largest connected component of the protein-protein interaction of yeast (2,018 nodes and 2,930 edges, the largest connected component include 81% of the nodes). The characteristic path length (CPL) is 5.61 while the diameter is 14 hops.
 
@@ -150,7 +151,7 @@ We can derive an approximate expression as follows.
 
 ![M2L05_09](imgs/M2L05_09.png)
 
-Even though this expression is a very rough approximation, it shows something remarkable: in a random network, even the longest shortest—paths are expected to grow very slowly (i.e., logarithmically) with the size of the network.
+Even though this expression is a __very rough approximation__, it shows something remarkable: in a random network, even the longest shortest—paths are expected to grow _very slowly (i.e., logarithmically)_ (really a rough estimation, but in $\Theta(ln)$ is good enough for some analysis) with the size of the network.
 
 Here is a numerical example: suppose we have a social network that covers all people (around 7 billion today) and assumes that each person knows well 64 other people. According to the previous expression, any two people are connected to each other with a “social chain” (shortest-path) of 5.4 relations.
 
@@ -171,7 +172,7 @@ This is three times larger than the expression we derived in the previous page. 
 Note that in both cases, the diameter is still increasing with the logarithm of the network size. So, the main qualitative conclusion remains what we stated in the previous page, i.e., the diameter of G(n,p) networks increases very slowly (logarithmically) with the number of nodes – and so the CPL cannot increase faster than that either.
 
 **Food For Thought**
-- Enumerate all the assumptions we made in the derivation for the diameter of G(n,p) networks.
+- Enumerate all the assumptions we made in the derivation for the diameter of G(n,p) networks. --> 1) $\overline{k} >1$ so as a giant connected component; 2) tree (no cycle to further shorten some pathes), so every node at least has k=2, excluding source and sink; 3) visit $\overline{k}$ instead of $\overline{k} - 1$; 4) 3) holds in propagation, so a balanced tree. 
 - Go back to the example of the previous page (a social network with 7 billion nodes and an average degree of 64). What would be the diameter according to either of the previous two approximations?
 
 ## Diameter and Efficiency of G(n,p) Versus Regular Networks
@@ -188,7 +189,7 @@ This suggests that in lattice networks the diameter grows as a power-law of the 
 
 ![M2L05_Fig09](imgs/M2L05_Fig09.png)
 
-Let us go back to the hypothetical social network of 7 billion humans – and with an average of 64 connections per person. If this social network was a regular lattice, it would need to have 6 dimensions so that each node has 64 connections. So the diameter would be in the order of n^(1/6), which is about 44 – this is much larger than the diameter we derived earlier for a random network of the same size and density.
+Let us go back to the hypothetical social network of 7 billion humans – and with an average of 64 connections per person. If this social network was a regular lattice, it would need to have 6 dimensions so that each node has 64 connections. So the diameter would be in the order of n^(1/6), which is about 44 – this is much larger than the diameter we derived earlier for a random network of the same size and density (with diameter as 5.4).
 
 These simple derivations show a major qualitative difference between regular networks and random networks: in the former, the diameter and CPL increase much faster than in the latter – as a *power-law* in the former and *logarithmically* in the latter.
 
@@ -197,7 +198,7 @@ These simple derivations show a major qualitative difference between regular net
 
 ## What Does “Small-world” Network Mean?
 
-A small-world network is a network that satisfies the small-world property. To determine if a network has small-world property, we *compare two of its characteristics against an ensemble of random G(n,p) networks with the same size n and density p*.
+A small-world network is a network that satisfies __the small-world property__. To determine if a network has small-world property, we *compare two of its characteristics against an ensemble of random G(n,p) networks with the same size n and density p*.
 
 For the first condition we check, **is the clustering coefficient much larger than the random G(n,p) networks**? This condition can be examined with an appropriate hypothesis test. For instance, the one-sample one-tailed t-test would examine, in this case, whether the clustering coefficient of the given network is significantly greater than the mean of the clustering coefficient values in the G(n,p) ensemble. 
 
@@ -205,21 +206,50 @@ For the second condition, we again check that **the CPL of the given network is 
 
 Please note that whether the previous conditions hold or not may depend on the significance level (“alpha value”) of the corresponding hypothesis tests. Additionally, it may be that even though the given network has a CPL (for instance) that is greater than the mean of the CPL values in the G(n,p) ensemble, the difference may be small in absolute magnitude (e.g., 2.1 versus 2.0).
 
-![M2L05_Fig10](imgs/M2L05_Fig10.png)
 *Small world network*
+![M2L05_Fig10](imgs/M2L05_Fig10.png)
 
-![M2L05_Fig11](imgs/M2L05_Fig11.png)
+So far this lesson has focused on two network properties, the presence of clustering and the relation between diameter and network size. You may wonder what about real world networks? Where do they stand in terms of these two properties?
+
+An important discovery by Watts and Strogatz in 1998 was that the networks we often see in practice have the following two properties:
+- They have strong clustering similar to that of lattice networks with the same average degree,
+- They have short paths similar to the characteristics path length and diameter we see in random Erdos-Renyi networks that we have same size n and density P as the real-world networks we were given.
+
+We refer to such networks as small-world networks. They are small in the sense that the shortest paths between nodes increase only modestly with a size of the network. Modestly means logarithmically or even slower. At the same time, small world networks are not randomly formed.
+
+
 *Characteristics of real-world networks*
+![M2L05_Fig11](imgs/M2L05_Fig11.png)
 
+On the contrary, the nodes form clusters of interconnected triangles, similar to what we see in social groups, such as families, groups of friends, or larger organizations of people. The table that you see here shows the characteristics of some real-world networks.
+
+The column shows the network name, the number of nodes n, the number of edges L, the average degree, the characteristic path length, the diameter, and the predicted diameter based on the formula we derived earlier in the last column. Note that the characteristic path length is the same order of magnitude with what we would expect from a $G(n,p)$ random network.
+
+Additionally, this plot shows the clustering coefficient for each of these networks with different colors. All networks have a much larger clustering coefficient than what would be expected from a corresponding $G(n,p)$ network.
+
+*Watts-Strogatz Model (1998 paper)*
 ![M2L05_Fig12](imgs/M2L05_Fig12.png)
-*Watts-Strogatz Model*
 
-![M2L05_Fig13](imgs/M2L05_Fig13.png)
+How can we create networks that have this small world property? Once such model was proposed by Watts and Strogatz in their 1998 paper that started the network science field. The model starts with a regular network with the desired number of nodes and average degree. The topology of the regular network is often the ring that we saw here (middle plot). With a small probability p, we select an edge and reassign one of its two stabs to a randomly chosen node as you see here. You may wonder, why do we expect that a small fraction of randomized edges will have any significant properties of this network?
+
+It turns out that even if this rewiring probability p is quite small, the randomized edges provides shortcuts that reduce the length of the shortest path between node pairs. As we will see next, even a small number of such shortcuts, meaning a rewiring probability p close to 1% is sufficient to reduce the characteristic path length and the diameter down to the same level with a corresponding random $G(n,p)$ network.
+
+At the same time, the rewired network is still highly clustered at the small level with the regular network we started from, as long as p, of course, is quite small.
+
+If this writing probability p was set to one, we should end up with a random $G(n,p)$ graph, which is what we see at the right. This network would have even shorter path, but it would not have any significant clustering.
+
+There have been analytical studies of the Watts-Strogatz Model that derived the clustering coefficient or the diameter as a function of the rewiring probability p. For our purposes, it is sufficient to see some simulation results only. The visualization here refers to a network of 1,000 nodes with an average degree of 10.
+
+It also shows the average clustering coefficient normalized by the corresponding coefficient when p is equal to zero with green dots. The plot also shows the average path length with purple dots, also normalized by the corresponding metric when p is equal to 0. Note that the logarithmic scale on the x-axis.
+
+As you can see, when p is close to 1%, the clustering coefficient is still almost the same as the regular network we started with and the average path length is close to what we would expect from a random graph.
+
 *Watts-Strogatz Model - clustering coeffcient & average path length*
+![M2L05_Fig13](imgs/M2L05_Fig13.png)
 
 **WS model can not produce networks with power law degree distribution.**
 - Degree distribution depends on rewiring probability p
-	- If p is close to 0, most nodes have same degree
+	- If p is close to 0, most nodes have same degree (regular network)
 	- If p approaches 1, we get Poisson degree distribution of a random graph
 - Degree distribution is not sufficiently skewed towards higher values - can not be mathematically modeled as power law
 
@@ -240,7 +270,7 @@ Lesson-4 described the Preferential Attachment (PA) model and we saw that it gen
 
 ![M2L05_Fig14](imgs/M2L05_Fig14.jpeg)
 
-The plot at the left shows the average clustering coefficient for networks of increasing size (the number of nodes is shown here as N). The networks are generated with the PA model, with m=2 links for every new node. Note that the clustering coefficient is significantly higher than that of random G(N,p) random graphs of the same size and density (p=m/(N-1)). It turns out (even though we will not prove it here) that the average clustering coefficient of a PA network scales as (ln N)^2 / N -  this is much larger than the corresponding clustering coefficient in G(N,p), which is O(1/N).
+The plot at the left shows the average clustering coefficient for networks of increasing size (the number of nodes is shown here as N). The networks are generated with the PA model, with m=2 links for every new node. Note that the clustering coefficient is significantly higher than that of random G(N,p) random graphs of the same size and density ($p=\frac{m}{(N-1)}$). It turns out (even though we will not prove it here) that the average clustering coefficient of a PA network scales as $\frac{(ln N)^2}{N}$ -  this is much larger than the corresponding clustering coefficient in G(N,p), which is O($\frac{1}{N}$).
 
 However, this also means that the clustering coefficient of PA networks decreases with the network size N. This is not what we have seen in practice (see figure at the right). In most real-world networks, the clustering coefficient does not reduce significantly at least as the network grows. Thus, even though the PA model produces significant clustering relative to random networks, it does not produce the clustering structure we see in real-world networks.
 
@@ -255,9 +285,9 @@ However, this also means that the clustering coefficient of PA networks decrease
 
 How about the length of the shortest paths in PA networks? How does their CPL scale with the network size N?
 
-It turns out that the CPL in PA networks scales even slower than in G(n,p) random graphs. In particular, an approximate expression for the CPL in PA networks is O(ln N / ln ln N), which has sub-logarithmic growth. This is shown with simulation results in the plot, where the PA networks were generated using m=2.
+It turns out that the CPL in PA networks scales even slower than in $G(n,p)$ random graphs. In particular, an approximate expression for the CPL in PA networks is $O(\frac{ln N}{ln ln N})$, which has sub-logarithmic growth. This is shown with simulation results in the plot, where the PA networks were generated using m=2.
 
-To summarize, the PA model generates networks with a power-law degree distribution (exponent=3), a clustering coefficient that decreases with network size as (ln N)^2 / N , and a CPL that increases sub-logarithmically as O(ln N / ln ln N).
+To summarize, the PA model generates networks with a power-law degree distribution (exponent=3), a clustering coefficient that decreases with network size as $\frac{(ln N)^2}{N}$, and a CPL that increases sub-logarithmically as $O(\frac{ln N}{ln ln N})$.
 
 **Food For Thought**
 - Look at the literature for a derivation of the previous formula for the CPL of PA networks.
@@ -268,11 +298,11 @@ To summarize, the PA model generates networks with a power-law degree distributi
 
 What about power-law networks with other exponent values? How does the CPL of those networks scale with network size?
 
-As we saw in the previous page, when the exponent (shown as γ in this plot) is equal to 3, we get the O(ln N / ln ln N) expression of PA networks.
+- As we saw in the previous page, when the exponent (shown as γ in this plot) is equal to 3, we get the O(ln N / ln ln N) expression of PA networks.
 
-The value γ is critical because the variance of the degree distribution becomes well-defined when γ > 3. In that case the power-law networks do not differ from G(N,p) random graphs in terms of their CPL – the average shortest path length increases as O(ln N).
+- The value γ is critical because the variance of the degree distribution becomes well-defined when γ > 3. In that case the power-law networks do not differ from G(N,p) random graphs in terms of their CPL – the average shortest path length increases as O(ln N).
 
-For γ values between 2 and 3 (i.e., the mean is finite but the variance of the degree distribution diverges), the CPL scales even slower, following a double-log pattern: O(ln ln N). These networks are sometimes referred to as **ultra-small world** networks.
+- For γ values between 2 and 3 (i.e., the mean is finite but the variance of the degree distribution diverges), the CPL scales even slower, following a double-log pattern: O(ln ln N). These networks are sometimes referred to as **ultra-small world** networks.
 
 The plots at the lower part of the visualization show shortest-path length distributions for three different exponent values as well as for a corresponding G(N,p) random graph. As you see, the differences between all these networks are minor when the network is only a few hundreds of nodes. For networks with millions of nodes, however, we see a major difference in the resulting path length distributions, showing clearly the major effect of the degree distribution exponent as well as the critical value of γ = 3.
 
@@ -289,7 +319,7 @@ In that case, we can have various **types** of connected triplets of nodes. The 
 
 Note that each of the 13 patterns is distinct when we consider the directionality of the edges. Also, if you are not convinced that these are the only 13 possible patterns you can try to find any additional patterns (hint: you will not be able to!).
 
-Each of these patterns is also given a name (e.g., FeedForward Loop or FFL). Instead of using the word “pattern”, we will be referring to such small subgraph types as **network motifs**.
+Each of these patterns is also given a name (e.g., __FeedForward Loop__ or FFL). Instead of using the word “pattern”, we will be referring to such small subgraph types as **network motifs**.
 
 A specific network motif (e.g., FFL) may occur in a network just based on chance. How can we check if that motif occurs much more frequently than that? What does it mean when a specific network motif occurs very frequently? Or the opposite, what does it mean when a network motif occurs much less frequently than expected based on chance? We will answer these questions next.
 
@@ -311,7 +341,7 @@ First, we need to count how many distinct instances of the FFL motif appear in G
 We then ask: how many times would the FFL motif take place in a randomly generated network Gr that **a)** has the same number of nodes with G, and **b)** each node u in Gr has the same in-degree and out-degree with the corresponding node u in G? One way to create Gr is to start from G and then randomly rewire it as follows: 
 - Pick a random pair of edges of (u,v) and (w,z) 
 - Rewire them to form two new edges (u,z) and (w,v) 
-- Repeat the previous two steps a large number of times relative to the number of edges in G. 
+- Repeat the previous two steps _a large number of times_ relative to the number of edges in G. 
 
 Note that the previous rewiring process generates a network Gr that preserves the in-degree and out-degree of every node in G. We can now count the number of FFL instances in Gr – let us call this count m(Gr).
 
