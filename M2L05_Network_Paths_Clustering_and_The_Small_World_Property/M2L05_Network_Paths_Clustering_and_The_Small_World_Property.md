@@ -63,7 +63,7 @@ A connected triplet is an **ordered** set of three nodes ABC such that A connect
 
 The definition of clustering coefficient can also be generalized for weighted networks as follows. Suppose that w_ij is the weight of the edge between nodes i and j.
 
-First, in weighted networks, instead of the degree of a node we often talk about its “strength”, defined as the sum of all weights of the node’s connections:
+First, in weighted networks, instead of the degree of a node we often talk about its __“strength”__, defined as the sum of all weights of the node’s connections:
 
 ![M2L05_03](imgs/M2L05_03.png)
 
