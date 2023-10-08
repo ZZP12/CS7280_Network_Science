@@ -45,9 +45,9 @@ The previous equation can be written in matrix form as:
 
 ![M3L06_02](imgs/M3L06_02.png)
 
-where ν is the vector all node centralities. This equation, however, is simply the **eigenvector** definition of matrix A: λ is the corresponding eigenvalue for eigenvector ν. This is why we refer to this centrality metric as “eigenvector centrality”.
+where ν is the vector all node centralities. This equation, however, is simply the **eigenvector** definition of matrix A: λ is the corresponding eigenvalue for eigenvector ν. This is why we refer to this centrality metric as __“eigenvector centrality”__.
 
-We wish to have non-negative centralities. In other words, the eigenvector ν corresponding to eigenvalue λ should consist of non-negative entries. It can be shown (using the Perron–Frobenius theorem) that using the largest eigenvalue of A satisfies this requirement.
+We wish to have non-negative centralities. In other words, the eigenvector ν corresponding to eigenvalue λ should consist of non-negative entries. It can be shown (using the Perron–Frobenius theorem) that __using the largest eigenvalue of A satisfies this requirement__.
 
 **The Katz Centrality**
 ![M3L06_Fig03](imgs/M3L06_Fig03.png)
@@ -70,12 +70,12 @@ Then, we can rewrite the previous definition in matrix form:
 
 Where 1 is a n-by-1 vector of all ones.
 
-The value of λ controls the relative magnitude between the constant centrality β we assign to each node and the centrality that each node derives from its neighbors. If λ is very large, then the former term dominates and all nodes have roughly the same centrality. If λ is too small, on the other hand, the Katz centralities may diverge. This is the case when the determinant of the matrix (I - 1/λ A) is zero, which happens when λ is equal to an eigenvalue of A. To avoid this divergence, the value of λ is typically *constrained to be larger than the maximum eigenvalue of A*.
+The value of λ controls the relative magnitude between the constant centrality β we assign to each node and the centrality that each node derives from its neighbors. If λ is very large, then the former term dominates and all nodes have roughly the same centrality. If λ is too small, on the other hand, the Katz centralities may diverge. This is the case when the determinant of the matrix $I - \frac{1}{λ} A$ is zero, which happens when λ is equal to an eigenvalue of A. To avoid this divergence, the value of λ is typically *constrained to be larger than the maximum eigenvalue of A*.
 
 Note that the Katz centrality values given in the figure are normalized by the L2-norm of the centrality vector. 
 
 **Food For Thought**
-- Derive the matrix-form equation of Katz centrality from the initial definition.
+- <s>Derive the matrix-form equation of Katz centrality from the initial definition.</s>
 
 ## PageRank Centrality
 
@@ -113,9 +113,9 @@ A commonly used path-based metric is closeness centrality. It is based on the le
 
 ![M3L06_07](imgs/M3L06_07.png)
 
-where j is any node in the same connected component with i, and n is the number of nodes in that connected component (including i). If the network is directed, then we typically focus on shortest-paths from any node j to node i (i.e., incoming paths to i). The range of closeness centrality values is limited between 0 and 1.
+where j is any node _in the same connected component_ with i, and n is the number of nodes in that connected component (including i). _If the network is directed, then we typically focus on shortest-paths from any node j to node i (i.e., incoming paths to i)_. The range of closeness centrality values is limited between 0 and 1.
 
-The closeness centrality has some shortcomings, including the fact that it does not consider all network nodes – only nodes that are in the same connected component with i. So an isolated cluster of nodes can have high closeness centrality values (close to 1) even though those nodes are not even connected to most other nodes.
+_The closeness centrality has some shortcomings, including the fact that it does not consider all network nodes – only nodes that are in the same connected component with i_. So an isolated cluster of nodes can have high closeness centrality values (close to 1) even though those nodes are not even connected to most other nodes.
 
 **Harmonic Centrality**
 ![M3L06_Fig06](imgs/M3L06_Fig06.png)
@@ -168,9 +168,9 @@ Another way to define the centrality of an edge is to quantify the impact of its
 ## Path Centrality For Directed Acyclic Graphs
 ![M3L06_Fig09](imgs/M3L06_Fig09.jpeg)
 
-In directed acyclic graphs (DAGs), we can consider all paths from the set of sources to the set of targets. The visualization above shows a DAG with three sources (orange nodes) and four targets (blue nodes). Each source-target path (ST-path) represents one **“dependency chain”** through which that target depends on the corresponding source.
+In directed acyclic graphs (DAGs), we can consider all paths from the set of sources to the set of targets. The visualization above shows a DAG with three sources (orange nodes) and four targets (blue nodes). Each __source-target path (ST-path)__ represents one **“dependency chain”** through which that target depends on the corresponding source.
 
-The path centrality of a node (including sources or targets) is defined as the total number of source-target paths that traverse that node.
+The __path centrality of a node__ (including sources or targets) is defined as the total number of source-target paths that traverse that node.
 
 It can be easily shown that the path centrality of node-i is the product of the number of paths from all sources to node-i, times the number of paths from node-i to all targets. The former term can be thought of as the **“complexity”** of node-i, while the second term can be thought of as the **“generality”** of node-i.
 
@@ -194,7 +194,7 @@ To choose the right metric, it is important to understand the notion of **“nod
 
 In some applications of network analysis, instead of trying to rank individual nodes in terms of centrality, we are interested in identifying the most important group of nodes in the network. There are different ways to think about the importance of groups of nodes. One of them is based on the notion of **k-core**:
 
-A k-core (or “core of order-k”) is a maximal subset of nodes such that each node in that subset is connected to at least k others in that subset.
+A k-core (or “core of order-k”) is a maximal subset of nodes such that each node in that subset is connected to __at least k__ others in that subset.
 
 Note that, based on the previous definition, a node in the k-core also belongs to all lower cores, i.e., to any k'-core with k'< k.
 
@@ -205,7 +205,7 @@ The visualization shows a network in which the red nodes belong to a core of ord
 
 Note that there is a purple node with degree=5 – but its highest order is 1 because all its connections except one are to nodes of degree-1. Similarly, there are green nodes of degree-3 that are in the 2-core set.
 
-A simple algorithm, known as **“k-core decomposition”**, can associate each node with the highest k-core order that that node belongs to. The algorithm proceeds iteratively by removing all nodes of degree k, for k=0, 1, 2, … During the iteration that the algorithm removes nodes of degree k, some higher-degree nodes may lose connections and become of degree-k. Those nodes would also be removed, joining the k-core until no further nodes can be removed in that iteration. The algorithm terminates when all nodes have been removed. Note that the maximum-order core set may not form a connected component.
+A simple algorithm, known as **“k-core decomposition”**, can associate each node with the highest k-core order that that node belongs to. The algorithm proceeds iteratively by removing all nodes of degree k, for k=0, 1, 2, … During the iteration that the algorithm removes nodes of degree k, some higher-degree nodes may lose connections and become of degree-k. Those nodes would also be removed, joining the k-core until no further nodes can be removed in that iteration. The algorithm terminates when all nodes have been removed. _Note that the maximum-order core set may not form a connected component._
 
 One way to think about k-cores is as the successive layers of an onion, where k=1 corresponds to the external layer of the onion, while the highest value of k corresponds to the “heart” of the onion.  Using this metaphor, the k-core decomposition process gradually peels off the network layer by layer until it reaches its most internal group of nodes.
 
@@ -231,12 +231,13 @@ A common approach for the detection of core-periphery structure is referred to a
 
 The metaphor behind this concept comes from social networks: the very rich people are few and they have a large number of acquaintances, which include the rest of those few very rich people. So those few very rich people form a highly clustered small group of nodes (the “rich-club”) that is also very well-connected with the rest of the network.
 
-To define this notion for general (but undirected) networks, suppose that the number of nodes with degree greater than k is n_k. Let e_k be the number of edges between those nodes. The maximum number of possible edges between those nodes is n_k(n_k - 1)/2. The “rich-club coefficient” for degree k is defined as:
+To define this notion for general (but undirected) networks, suppose that the number of nodes with degree __greater than k__ is $n_k$. Let $e_k$ be the number of edges between those nodes. The maximum number of possible edges between those nodes is $n_k (n_k - 1)/2$. The “rich-club coefficient” for degree k is defined as:
 
 ![M3L06_10](imgs/M3L06_10.png)
+
 and it quantifies the density of the connections between nodes of degree greater than k.
 
-How can we tell however whether the value of Φ(k) is statistically significant for a given k?  It could be that even randomly wired networks have about the same value of Φ(k), at least for some degree values. To do so, we also generate an ensemble of random networks with the same number of nodes and degree distribution (as we did in Lesson-4 for the detection of network motifs). These random networks represent our **null model**. We can then compute the average value of Φ(k) for each k, averaging across all random networks.
+How can we tell however whether the value of $\phi(k)$ is statistically significant for a given k?  It could be that even randomly wired networks have about the same value of Φ(k), at least for some degree values. To do so, we also generate an ensemble of random networks with the same number of nodes and degree distribution (as we did in Lesson-4 for the detection of network motifs). These random networks represent our **null model**. We can then compute the average value of Φ(k) for each k, averaging across all random networks.
 
 If the rich-club coefficient for degree k in the given network is much larger than the corresponding coefficient in the null model, we can mark that value of k as statistically significant for the existence of a rich-club. If there is at least one such statistically significant value of k, we conclude that the network includes a rich-club -- the set of nodes with degree greater than k. If there are multiple such values of k, the rich-club nodes can be identified based on the value of k for which we have the largest difference between the rich-club coefficient in the real network versus the null model (even though there is some variation about this in the literature).
 
@@ -246,23 +247,23 @@ The visualization shows a synthetic network (left). The plot at the right shows 
 
 **Food For Thought**
 - Think about the similarities and differences between the following notions:
-	- a) the rich-club set of nodes (if it exists)
-	- b) the maximum order k-core group (this set of nodes always exists)
-	- c) a group of nodes that can be described as hubs because their degree is higher than the average degree plus 3 standard deviations (they may or may not exist).
+	- a) the rich-club set of nodes (if it exists) --> e.g., of k, means those nodes, all with degree > k, are statisitcally inter-connected than random graph. 
+	- b) the maximum order k-core group (this set of nodes always exists) --> those nodes, all with degree >= k, connect with >= k nodes in the group. So rich-club coefficient $>= \frac{k}{(n-1)}$, but not sure if statistically significant. 
+	- c) a group of nodes that can be described as hubs because their degree is higher than the average degree plus 3 standard deviations (they may or may not exist). --> focus on a node, not group of nodes. 
 
 ## Core Set of Nodes in DAGs
 ![M3L06_Fig14](imgs/M3L06_Fig14.jpeg)
-A path-based approach to identify a group of core nodes in a network is referred to as the “τ-core”. 
+A path-based approach to identify a group of core nodes in a network is referred to as the **“τ-core”**. 
 
-We define that a node v “covers” a path p when v is traversed by p. 
+We define that a node v __“covers”__ a path p when v is traversed by p. 
 
-The τ-core is defined as follows: given a set of network paths P we are interested in, what is the minimal set of nodes that can cover at least a fraction τ of all paths in P?
+The τ-core is defined as follows: _given a set of network paths P we are interested in, what is the minimal set of nodes that can cover at least a fraction τ of all paths in P?_
 
 In the context of DAGs, the set P can be the ST-paths from the set of all sources (orange nodes) to all targets (blue nodes). 
 
-The rationale for covering only a fraction τ of paths (say 90%) instead of all paths is because in many real networks there are some ST-paths that do not traverse any intermediate nodes.
+The rationale for covering only a fraction τ of paths (say 90%) instead of all paths is because in many real networks there are some ST-paths that __do not__ traverse any intermediate nodes.
 
-The problem of computing the the **“τ-core”** has been shown to be NP-Complete in the following paper. It can be approximated by a greedy heuristic that iteratively selects the node with the maximum number of remaining un-covered paths until the τ constraint is met.
+The problem of computing the **“τ-core”** has been shown to be NP-Complete in the following paper. It can be approximated by a greedy heuristic that iteratively selects the node with the maximum number of remaining un-covered paths until the τ constraint is met.
 
 Sabrin, Kaeser M., and Constantine Dovrolis. "The hourglass effect in hierarchical dependency networks." Network Science 5.4 (2017): 490-528.
 
