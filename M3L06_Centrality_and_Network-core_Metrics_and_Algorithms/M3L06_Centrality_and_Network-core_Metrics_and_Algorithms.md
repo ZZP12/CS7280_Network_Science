@@ -134,7 +134,7 @@ An improved metric is harmonic centrality, defined as:
 
 In some network analysis applications, the importance of a node is associated with how many paths go through a node: the more routes go through a node, the more central that node is.
 
-The most common instance of this metric is the “shortest-path betweenness centrality”. Consider any two nodes s (source) and t (target) in the same connected component, and let us define that the number of shortest-paths between these two nodes is n_s,t. Also, suppose that the subset of these paths that traverses node i is n_s,t(i), where node i is different than s and t.
+The most common instance of this metric is the “shortest-path betweenness centrality”. Consider any two nodes s (source) and t (target) in the same connected component, and let us define that the number of shortest-paths between these two nodes is $n_{s,t}$. Also, suppose that the subset of these paths that traverses node i is $n_{s,t}(i)$, where node i is different than s and t.
 
 The (shortest-path) betweenness centrality of node i is defined as:
 ![M3L06_09](imgs/M3L06_09.png)
@@ -253,6 +253,7 @@ The visualization shows a synthetic network (left). The plot at the right shows 
 
 ## Core Set of Nodes in DAGs
 ![M3L06_Fig14](imgs/M3L06_Fig14.jpeg)
+
 A path-based approach to identify a group of core nodes in a network is referred to as the **“τ-core”**. 
 
 We define that a node v __“covers”__ a path p when v is traversed by p. 
