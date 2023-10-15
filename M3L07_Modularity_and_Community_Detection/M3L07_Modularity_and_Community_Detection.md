@@ -7,7 +7,7 @@ Students will be able to:
 - Analyze and deploy algorithms for community detection 
 - Understand the notion of hierarchical modularity
 
-## Required and Recommended Reading
+###Required and Recommended Reading
 **Required Reading**
 - Chapter-9 from A-L. Barabási, [Network Science](http://networksciencebook.com/), 2015.
 
@@ -23,18 +23,18 @@ The visualization at the right shows such a bisection. Note that there are only 
 
 We can also state more general versions of this problem in which we partition the network into K non-overlapping sets of the same size, where K>2 is a given constant. 
 
-The graph partitioning problem is important in many applications. For instance, in distributed computing, we are given a program in which there are N interacting threads but we only have K processors ($K<N$). The interactions between threads can be represented with a graph, where each edge represents a pair of threads that need to communicate while processing.  It is important to assign interacting groups of threads to the same processor (so that we minimize the inter-processor communication delays) and to also equally split the threads between the K processors so that their load is balanced.
+The graph partitioning problem is important in many applications. For instance, in distributed computing, we are given a program in which there are N interacting threads but we only have K processors ($K < N$). The interactions between threads can be represented with a graph, where each edge represents a pair of threads that need to communicate while processing.  It is important to assign interacting groups of threads to the same processor (so that we minimize the inter-processor communication delays) and to also equally split the threads between the K processors so that their load is balanced.
 
 ![M3L07_Fig02](imgs/M3L07_Fig02.jpeg)
 
-The graph partitioning problem is NP-Complete and so we only have efficient algorithms that can approximate its solution. The Kerninghan-Lin algorithm – as shown in the visualization above -- iteratively switches one pair of nodes between the two sets of the partition, selecting the pair that will cause the largest reduction in the number of edges that cut across the partition. 
+The graph partitioning problem is __NP-Complete__ and so we only have efficient algorithms that can approximate its solution. The __Kerninghan-Lin algorithm__ – as shown in the visualization above -- iteratively switches one pair of nodes between the two sets of the partition, selecting the pair that will cause the largest reduction in the number of edges that cut across the partition. 
 
 For our purposes, it is important to note that _in the graph partitioning problem we are given the number of sets in the partition and that each set should have the same size. As we will see, this is very different than the community detection problem_.
 
 ## Network Community Detection
 ![M3L07_Fig03](imgs/M3L07_Fig03.png)
 
-In the community detection problem, we also need to partition the nodes of a graph into a set of non overlapping clusters or communities. But the key difference is that we do not know a priori how many sets communities exists and there is no requirement that they have the same size. What is the key property of its community?
+In the community detection problem, we also need to partition the nodes of a graph into a set of __non-overlapping__ clusters or communities. But the key difference is that we __do NOT__ know a priori how many sets communities exists and there is no requirement that they have the same size. What is the key property of its community?
 
 Loosely speaking, the nodes within its community should form a densely connected sub-graph. Of course, this is not a mathematically precise definition because it does not specify how densely the community sub graph should be. One extreme point wold be to require that this community is a maximally sized clique. In other words, a complete sub graph that cannot be increased any further.
 
@@ -78,7 +78,7 @@ One such metric is the __edge (shortest path) betweenness centrality__, introduc
 
 Another edge centrality metric that can be used for the same purpose is the __random walk betweenness centrality__. Here, instead of following shortest paths from a node u to a node v, we compute the probability that a random walk that starts from u and terminates at v traverses each edge e, as shown in visualization (b).  The edge with the highest such centrality is removed first.   
 
-Note that the computational complexity of such algorithms depends on the algorithm we use for the computation of the centrality metric. For betweenness centrality, that computation can be performed in O(LN), where L is the number of edges and N is the number of nodes. Given that we remove one edge each time, and need to recompute the centrality of the remaining edges in each iteration, the computational complexity of the Girvan-Newman algorithm is O(L2 N). In __sparse networks__ the number of edges is in the same order with the number of nodes, and so the Girvan-Newman algorithm runs in O(N3).   
+Note that the computational complexity of such algorithms depends on the algorithm we use for the computation of the centrality metric. For betweenness centrality, that computation can be performed in O(LN), where L is the number of edges and N is the number of nodes. Given that we remove one edge each time, and need to recompute the centrality of the remaining edges in each iteration, the computational complexity of the Girvan-Newman algorithm is $O(L^2 N)$. In __sparse networks__ the number of edges is in the same order with the number of nodes, and so the Girvan-Newman algorithm runs in $O(N^3)$.   
 
 ## Divisive Hierarchical Community Detection 
 
@@ -97,7 +97,7 @@ The next split takes place after we remove two edges, the edge between G and H a
 
 The process can continue, removing one edge at a time, and moving down the dendrogram, until we end up with isolated nodes.   
 
-Note that a hierarchical clustering process does NOT tell us what is the best set of communities – each horizontal cut of the dendrogram corresponds to a different set of communities. So we clearly need an additional objective or criterion to select the best such set of communities. Such a metric, called __modularity__ M, is shown in the visualization (f), which suggests we cut the dendrogram at the point of three communities (yellow line).  We will discuss the metric M a bit later in this lesson.    
+Note that a hierarchical clustering process __does NOT__ tell us what is the best set of communities – each horizontal cut of the dendrogram corresponds to a different set of communities. So we clearly need an additional objective or criterion to select the best such set of communities. Such a metric, called __modularity__ M, is shown in the visualization (f), which suggests we cut the dendrogram at the point of three communities (yellow line).  We will discuss the metric M a bit later in this lesson.    
 
 This algorithm always detect communities in a given network. So, even a random network can be split in this hierarchical manner, even though the resulting communities may not have any statistical significance.    
 
@@ -117,7 +117,7 @@ Here, we start the dendrogram at the leaves, one for each node. In each iteratio
 If two nodes, i and j, belong to the same community, we expect that they will both be connected to several other nodes of the same community. So, we expect that i and j have a large number of common neighbors, relative to their degree.   
 
 To formalize this intuition, we can define a similarity metric $S_{i,j}$ between any pair of nodes i and j:  
-$$S_{i,j} = \frac{N_{i,j} + A_{i,j}}{min\{k_i, k_j\}}$$
+$$S_{i,j} = \frac{N_{i,j} + A_{i,j}}{min (k_i, k_j)}$$
 
 where $N_{i,j}$ is the number of common neighbors of i and j, $A_{i,j}$ is the adjacency matrix element for the two nodes (1 if they are connected, 0 otherwise), and $k_i$ is the degree of node i.     
 
@@ -135,6 +135,7 @@ The visualization at the rights shows the color-coded node similarity matrix, fo
 ## Hierarchical Clustering Approaches – Group Similarity
 
 Image 9.10 from networksciencebook.com Three approaches, called __single, complete and average cluster similarity__, are frequently used to calculate the community similarity from the __node-similarity matrix $x_{ij}$__.
+
 ![M3L07_Fig10](imgs/M3L07_Fig10.jpeg)
 
 How to compute the similarity between two groups of nodes (as opposed to individual nodes)?  
