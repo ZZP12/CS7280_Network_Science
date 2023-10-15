@@ -17,29 +17,55 @@ Students will be able to:
 ![M3L07_Fig01](imgs/M3L07_Fig01.png)
 Let us start with “graph partitioning” – a classical problem in computer science. 
 
-Given a graph, how would we partition the nodes into two non-overlapping sets of the same size so that we minimize the number of edges between the two sets? This is also known as the “minimum bisection problem”.
+Given a graph, how would we partition the nodes into two non-overlapping sets of the same size so that we minimize the number of edges between the two sets? This is also known as the “__minimum bisection problem__”.
 
 The visualization at the right shows such a bisection. Note that there are only four edges that cross the partition boundary (red dashed line) – and each set in the partition has seven nodes. 
 
 We can also state more general versions of this problem in which we partition the network into K non-overlapping sets of the same size, where K>2 is a given constant. 
 
-The graph partitioning problem is important in many applications. For instance, in distributed computing, we are given a program in which there are N interacting threads but we only have K processors (K\<N). The interactions between threads can be represented with a graph, where each edge represents a pair of threads that need to communicate while processing.  It is important to assign interacting groups of threads to the same processor (so that we minimize the inter-processor communication delays) and to also equally split the threads between the K processors so that their load is balanced.
+The graph partitioning problem is important in many applications. For instance, in distributed computing, we are given a program in which there are N interacting threads but we only have K processors ($K<N$). The interactions between threads can be represented with a graph, where each edge represents a pair of threads that need to communicate while processing.  It is important to assign interacting groups of threads to the same processor (so that we minimize the inter-processor communication delays) and to also equally split the threads between the K processors so that their load is balanced.
 
 ![M3L07_Fig02](imgs/M3L07_Fig02.jpeg)
 
 The graph partitioning problem is NP-Complete and so we only have efficient algorithms that can approximate its solution. The Kerninghan-Lin algorithm – as shown in the visualization above -- iteratively switches one pair of nodes between the two sets of the partition, selecting the pair that will cause the largest reduction in the number of edges that cut across the partition. 
 
-For our purposes, it is important to note that in the graph partitioning problem we are given the number of sets in the partition and that each set should have the same size. As we will see, this is very different than the community detection problem.
+For our purposes, it is important to note that _in the graph partitioning problem we are given the number of sets in the partition and that each set should have the same size. As we will see, this is very different than the community detection problem_.
 
 ## Network Community Detection
 ![M3L07_Fig03](imgs/M3L07_Fig03.png)
 
+In the community detection problem, we also need to partition the nodes of a graph into a set of non overlapping clusters or communities. But the key difference is that we do not know a priori how many sets communities exists and there is no requirement that they have the same size. What is the key property of its community?
+
+Loosely speaking, the nodes within its community should form a densely connected sub-graph. Of course, this is not a mathematically precise definition because it does not specify how densely the community sub graph should be. One extreme point wold be to require that this community is a maximally sized clique. In other words, a complete sub graph that cannot be increased any further.
+
+Here in this visualization, we see a clique based community with four orange nodes. This is a stringent definition however, and it does not capture the pragmatic fact that some edges between nodes of a community may be missing. So another way to think of its community is an approximate clique, a sub graph in which the number of internal edges, in other words, edges between nodes of the sub graph is much larger than the number of external edges, edges between nodes of that sub graph and the rest of the graph. This is again a rather loose definition, however, and it does not tell us which community is better. The purple at the left or the green at the right?
+
 ![M3L07_Fig04](imgs/M3L07_Fig04.png)
+
+In order to make the community detection problem well defined, we need to add some additional constraints. Before we address this question, it is good to reflect on some high level questions regarding communities.
+
+What if there are no real communities in a network? What if the network is randomly formed?
+In particular, if a network is made of random connections, it may still have some densely connected sub graphs depending on the graph density. It would not make sense to claim that such a network has an interesting community structure however. So how should we avoid discovering communities that are formed strictly by chance? We will return to these questions later in this lesson as well as at the next lesson.
 
 ![M3L07_Fig05](imgs/M3L07_Fig05.png)
 
+Another way to think about network communities and visualize the presence is through the adjacency matrix. Suppose that there are k non-overlapping groups of nodes of potentially different sizes, so that, the density of the internal connections within its group is much greater than the density of external connections.
+
+If we reorder the adjacency network of the network, so that the nodes of its group appear in consecutive rows, we will observe that the adjacency matrix includes k dense sub matrices one for each community. The rest of the adjacency matrix is not completely zeros, but it is much more sparsely populated. This is shown in the visualization for a network with four communities, the red, the blue, the green and the yellow. In this case all four communities have the same size. the probability that two nodes of the same community are connected is 50%. The density of the external edges is only 10%.
+
+For example, we also saw a reference network the connection probabilities is the same for all pairs of nodes and the total number of edges is the same as in the first row. Clearly the second network, the random one, doesn’t have communities, and the adjacency matrix cannot be represented in the blog structure we show earlier.
+
 ![M3L07_Fig06](imgs/M3L07_Fig06.png)
 
+In some instances of community detection problem, we’re fortunate to know the correct communities based on additional information about that data set. In other words, we know hte ground truth.
+
+A famous such case is the Zachary’s Karate Club network. Zachary was a sociologist that started the interactions between 34 members of a karate club in the early 1970s. He documented the pairwise interactions between all members of the club and he found 78 such edges pairs of members that interacted regularly outside the club.
+
+What made the data famous is that the president of the club and the instructor had a conflict at some point and so the club split into two groups. About half of the members followed the instructor into a different club. So we do know for this data set that there were actually two communities and we know that exact membership of its community. These two communities are shown in the visualization with circles versus squares.
+
+Today, any proposed community detection algorithm is also evaluated with the Zachary Karate club data set. It is a very small data set, but it is one of the very few cases in which we know the ground truth. The four different colors in the visualization shows the results of a community detection algorithm that we will discuss later in this lesson referred to as modularity maximization. Note that the algorithms detects four communities instead of two, which is the right answer.
+
+It manages to correctly identify two communities, the green and the orange that represent the club members that follow the instructor to a different club. And two other communities, the white and the purple that represents members that stayed with the club president.
 
 ## Community Detection Based on Edge Centrality Metrics
 ![M3L07_Fig07](imgs/M3L07_Fig07.jpeg)
@@ -48,11 +74,11 @@ A family of algorithms for community detection is based on hierarchical clusteri
 
 Let us start with divisive algorithms. We first need a metric to select edges that fall between communities – the iterative removal of such edges will gradually result in smaller and smaller communities.   
 
-One such metric is the edge (shortest path) betweenness centrality, introduced in Lesson-6. Recall that this metric is the fraction of shortest paths, across all pairs of terminal nodes, that traverses a given edge.  Visualization (a) shows the value of the betweenness centrality for each edge. Removing the edge with the maximum centrality value (0.57) will partition the network into two communities. We can then recompute the betweenness centrality for each remaining edge, and repeat the process to identify the next smaller communities.  This algorithm is referred to as **"Girvan-Newman"** in the literature. 
+One such metric is the __edge (shortest path) betweenness centrality__, introduced in Lesson-6. Recall that this metric is the fraction of shortest paths, across all pairs of terminal nodes, that traverses a given edge.  Visualization (a) shows the value of the betweenness centrality for each edge. Removing the edge with the maximum centrality value (0.57) will partition the network into two communities. We can then recompute the betweenness centrality for each remaining edge, and repeat the process to identify the next smaller communities.  This algorithm is referred to as **"Girvan-Newman"** in the literature. 
 
-Another edge centrality metric that can be used for the same purpose is the random walk betweenness centrality. Here, instead of following shortest paths from a node u to a node v, we compute the probability that a random walk that starts from u and terminates at v traverses each edge e, as shown in visualization (b).  The edge with the highest such centrality is removed first.   
+Another edge centrality metric that can be used for the same purpose is the __random walk betweenness centrality__. Here, instead of following shortest paths from a node u to a node v, we compute the probability that a random walk that starts from u and terminates at v traverses each edge e, as shown in visualization (b).  The edge with the highest such centrality is removed first.   
 
-Note that the computational complexity of such algorithms depends on the algorithm we use for the computation of the centrality metric. For betweenness centrality, that computation can be performed in O(LN), where L is the number of edges and N is the number of nodes. Given that we remove one edge each time, and need to recompute the centrality of the remaining edges in each iteration, the computational complexity of the Girvan-Newman algorithm is O(L2 N). In sparse networks the number of edges is in the same order with the number of nodes, and so the Girvan-Newman algorithm runs in O(N3).   
+Note that the computational complexity of such algorithms depends on the algorithm we use for the computation of the centrality metric. For betweenness centrality, that computation can be performed in O(LN), where L is the number of edges and N is the number of nodes. Given that we remove one edge each time, and need to recompute the centrality of the remaining edges in each iteration, the computational complexity of the Girvan-Newman algorithm is O(L2 N). In __sparse networks__ the number of edges is in the same order with the number of nodes, and so the Girvan-Newman algorithm runs in O(N3).   
 
 ## Divisive Hierarchical Community Detection 
 
@@ -71,7 +97,7 @@ The next split takes place after we remove two edges, the edge between G and H a
 
 The process can continue, removing one edge at a time, and moving down the dendrogram, until we end up with isolated nodes.   
 
-Note that a hierarchical clustering process does NOT tell us what is the best set of communities – each horizontal cut of the dendrogram corresponds to a different set of communities. So we clearly need an additional objective or criterion to select the best such set of communities. Such a metric, called modularity M, is shown in the visualization (f), which suggests we cut the dendrogram at the point of three communities (yellow line).  We will discuss the metric M a bit later in this lesson.    
+Note that a hierarchical clustering process does NOT tell us what is the best set of communities – each horizontal cut of the dendrogram corresponds to a different set of communities. So we clearly need an additional objective or criterion to select the best such set of communities. Such a metric, called __modularity__ M, is shown in the visualization (f), which suggests we cut the dendrogram at the point of three communities (yellow line).  We will discuss the metric M a bit later in this lesson.    
 
 This algorithm always detect communities in a given network. So, even a random network can be split in this hierarchical manner, even though the resulting communities may not have any statistical significance.    
 
@@ -83,21 +109,21 @@ This algorithm always detect communities in a given network. So, even a random n
 
 Let us now switch to agglomerative (or bottom-up) hierarchical clustering algorithms.   
 
+(Image 9.9 from networksciencebook.com Ravasz Algorithm)
 ![M3L07_Fig09](imgs/M3L07_Fig09.jpeg)
 
 Here, we start the dendrogram at the leaves, one for each node. In each iteration, we decide which nodes to merge so that we extend the dendrogram by one branching point towards the top. The merged nodes should ideally belong to the same community. So we first need a metric that quantifies how likely it is that two nodes belong to the same community.   
 
 If two nodes, i and j, belong to the same community, we expect that they will both be connected to several other nodes of the same community. So, we expect that i and j have a large number of common neighbors, relative to their degree.   
 
-To formalize this intuition, we can define a similarity metric S_i,j between any pair of nodes i and j:  
+To formalize this intuition, we can define a similarity metric $S_{i,j}$ between any pair of nodes i and j:  
+$$S_{i,j} = \frac{N_{i,j} + A_{i,j}}{min\{k_i, k_j\}}$$
 
-S_i,j = (N_i,j + A_i,j) / min{k_i, k_j}
+where $N_{i,j}$ is the number of common neighbors of i and j, $A_{i,j}$ is the adjacency matrix element for the two nodes (1 if they are connected, 0 otherwise), and $k_i$ is the degree of node i.     
 
-where N_i,j is the number of common neighbors of i and j, A_i,j is the adjacency matrix element for the two nodes (1 if they are connected, 0 otherwise), and k_i is the degree of node i.     
+Note that $S_{i,j} = 1$ if the two nodes are connected with each other and every neighbor of the lower-degree node is also a neighbor of the other node.     
 
-Note that S_i,j = 1 if the two nodes are connected with each other and every neighbor of the lower-degree node is also a neighbor of the other node.     
-
-On the other hand, S_i,j = 0 if the two nodes are not connected to each other and they do not have any common neighbor.     
+On the other hand, $S_{i,j} = 0$ if the two nodes are not connected to each other and they do not have any common neighbor.     
 
 The visualization at the left shows the node similarity value for each pair of connected nodes.   
 
@@ -108,8 +134,8 @@ The visualization at the rights shows the color-coded node similarity matrix, fo
  
 ## Hierarchical Clustering Approaches – Group Similarity
 
+Image 9.10 from networksciencebook.com Three approaches, called __single, complete and average cluster similarity__, are frequently used to calculate the community similarity from the __node-similarity matrix $x_{ij}$__.
 ![M3L07_Fig10](imgs/M3L07_Fig10.jpeg)
-*Image 9.10 from networksciencebook.com Three approaches, called single, complete and average cluster similarity, are frequently used to calculate the community similarity from the node-similarity matrix xij*
 
 How to compute the similarity between two groups of nodes (as opposed to individual nodes)?  
 
@@ -117,7 +143,7 @@ In other words, if we are given two groups of nodes, say 1 and 2, and we know th
 
 **There are three ways to do so:** 
 1. Single linkage: the similarity of groups 1 and 2 is determined by the minimum distance (i.e., maximum similarity) across all pairs of nodes in groups 1 and 2.  
-2. Complete linkage: the similarity of groups 1 and 2 is determined by the maximum distance (i.e., minimum similarity) across all pairs of nodes in groups 1 and 2. 
+2. Complete linkage: the similarity of groups 1 and 2 is determined by the __maximum__ distance (i.e., minimum similarity) across all pairs of nodes in groups 1 and 2. 
 3. Average linkage: the similarity of groups 1 and 2 is determined by the average distance (i.e., average similarity) across all pairs of nodes in groups 1 and 2. 
 
 The visualization illustrates the three approaches. Note that this figure gives the pairwise distance between nodes. The similarity between two nodes can be thought of as inversely related to their distance.  
@@ -131,7 +157,7 @@ Average linkage is the most commonly used metric.
 
 Now that we have defined a similarity metric for two nodes (based on the number of common neighbors), and we have also learned how to calculate a similarity value for two groups of nodes, we can design the following iterative algorithm to compute a hierarchical clustering dendrogram in a bottom-up manner.  
 
-We start with each node represented as a leaf of the dendrogram. We also compute the matrix of N^2 pairwise node similarities.  
+We start with each node represented as a leaf of the dendrogram. We also compute the matrix of $N^2$ pairwise node similarities.  
 
 In each step, we select the two nodes, or two groups of nodes more generally, that has the highest similarity value – and merge them into a new group of nodes. This new group forms a larger community and the corresponding merging operation corresponds to a new branching point in the dendrogram.  
 
@@ -139,11 +165,11 @@ The process completes until all the nodes belong in the same group (root of the 
 
 Note that depending on where we **“cut”** the dendrogram we will end up with a different set of communities. For instance, the lowest horizontal yellow line at the visualization corresponds to four communities (green, purple, orange, and brown) – note that node D forms a community by itself.  
 
-The computational complexity of this algorithm, which is known as **Ravasz algorithm**, is O(N^2) because the algorithm requires: 
+The computational complexity of this algorithm, which is known as **Ravasz algorithm**, is __$O(N^2)$__ because the algorithm requires: 
 
-1. O(N^2)for the initial calculation of the pairwise node similarities 
-2. O(N) for updating the similarity between the newly formed group of nodes and all other groups – and this is performed in each iteration, resulting in O(N^2)
-3. O(N log N)for constructing the dendrogram 
+1. $O(N^2)$for the initial calculation of the pairwise node similarities 
+2. O(N) for updating the similarity between the newly formed group of nodes and all other groups – and this is performed in each iteration, resulting in $O(N^2)$
+3. $O(N\ log N)$for constructing the dendrogram.
 
 **Food For Thought**
 - Try to think of another agglomerative hierarchical clustering approach, based on a different similarity metric.
@@ -154,23 +180,23 @@ The computational complexity of this algorithm, which is known as **Ravasz algor
 
 All approaches for community detection we have seen so far cannot answer the following two questions:  
 
-Which level of the dendrogram, or more generally, which partition of the nodes into a set of communities is the best?  
+_Which level of the dendrogram, or more generally, which partition of the nodes into a set of communities is the best?_  
 
-And, are these communities statistically significant?  
+And, _are these communities statistically significant?_  
 
-The modularity metric gives us a way to answer these questions. The idea is that randomly wired networks should not have communities -- and so a given community structure is statistically significant if the number of internal edges within the given communities is much larger than the number of internal edges if the network was randomly rewired (but preserving the degree of each node).   
+The __modularity metric__ gives us a way to answer these questions. __The idea is that randomly wired networks should not have communities__ -- and so a given community structure is statistically significant if the number of internal edges within the given communities is much larger than the number of internal edges if the network was randomly rewired (but preserving the degree of each node).   
 
-In more detail: suppose we are given a network with N nodes and L edges – for now, let us assume that the network is undirected and unweighted.   
+In more detail: suppose we are given a network with N nodes and __L edges__ – for now, let us assume that the network is undirected and unweighted.   
 
-We denote the degree of node i as k_i.   
+We denote the degree of node i as $k_i$.   
 
-Additionally, we are given partitioning of all nodes to a set of C hypothetical communities C_1, C_2, ...C_c.   
+Additionally, we are given partitioning of all nodes to a set of C hypothetical communities $C_1$, $C_2$, ...$C_c$.   
 
 Our goal is to evaluate this community structure – how good it is and whether it is statistically significant.   
 
 Let A be the network adjacency matrix.   
 
-The number of internal edges between all nodes of community C_c is
+The number of internal edges between all nodes of community $C_c$ is
 
 ![M3L07_01](imgs/M3L07_01.png)
 
@@ -178,7 +204,7 @@ On the other hand, if the connections between nodes are randomly made, the expec
 
 ![M3L07_02](imgs/M3L07_02.png)
 
-because node i has k_i stubs and the probability that any of those stubs connect to a stub of node j is k_j/2L.
+because node i has $k_i$ stubs and the probability that any of those stubs connect to a stub of node j is $k_j/2L$.
 
 So, we can define the modularity metric based on the difference between the actual number of internal edges and the expected number of internal edges, across all C communities:  
 
@@ -188,11 +214,11 @@ We divided by the total number of edges L, so that M is always less than 1.
 
 Note that the modularity metric does not directly penalize any external edges, i.e., there is no term in this equation that decreases the modularity for every external edge between two communities. The more external edges exist however, the lower is the sum of the internal edges, while the sum of the expected number of random edges remains constant. In other words, the modularity metric indirectly selects community assignments that have more internal edges and fewer external edges.   
 
-How can we use this metric to select between different community structures? It is simple: select the set of communities that has the larger modularity value.  
+How can we use this metric to select between different community structures? It is simple: _select the set of communities that has the larger modularity value._ 
 
 And how can we know if a given community structure is statistically significant? A simple way to answer this question is by comparing the modularity of a network with 0, which is the value we would expect from a randomly wired network.   
 
-Alternatively, we can generate an ensemble of random networks using degree-preserving randomization and estimate the distribution of modularity values in that ensemble. We can then use a one-sided hypothesis test to evaluate whether the modularity of the original network is larger than that distribution, for a given statistical significance level.    
+Alternatively, we can generate an ensemble of random networks using degree-preserving randomization and estimate the distribution of modularity values in that ensemble. We can then use a __one-sided hypothesis__ test to evaluate whether the modularity of the original network is larger than that distribution, for a given statistical significance level.    
 
 ## Modularity Metric- Derivation
 
@@ -200,22 +226,34 @@ Alternatively, we can generate an ensemble of random networks using degree-prese
 
 We can now derive a more useful formula for the modularity metric, starting from the definition we gave earlier:  
 
+
 ![M3L07_04](imgs/M3L07_04.png)
 ![M3L07_05](imgs/M3L07_05.png)
 
+$L_c$ is the number of internal edges in community $C_c$: 
+$$L_c=\frac{1}{2} \sum_{(i,j)\in C_c} A_{i,j}$$
+
+$\kappa_c$ is the total number of stubs at the nodes of community c: 
+$$\kappa_c = \sum_{i \in C_c} k_i$$
+
+The modularity metric: 
+$$M = \sum_{c=1}^C[\frac{L_c}{L} - (\frac{\kappa_c}{2L})^2]$$ 
 
 This expression is quite useful because it expresses the modularity of a given community assignment as a summation, across all communities, of the following difference:   
 
 the fraction of network edges that are internal to community C_c MINUS the squared fraction of total edge stubs that belong to that community.   
 
 **Food For Thought**
-- Use this modularity formula to calculate the modularity of each of the following partitions: a) all nodes are in the same community, b) each node is in a community by itself, c) each community includes nodes that are not connected with each other, d) a partition in which there are no inter-community edges. 
+Use this modularity formula to calculate the modularity of each of the following partitions: 
+- a) all nodes are in the same community, --> $M=0$
+- b) each node is in a community by itself, --> $M=- \sum_i (\frac{\kappa_i}{2L})^2$
+- c) each community includes nodes that are not connected with each other, --> ?
+- d) a partition in which there are no inter-community edges. --> $1+ c)$
 
 
 ## Modularity Metric – Selecting The Community Assignment
 
 ![M3L07_Fig14](imgs/M3L07_Fig14.jpeg)
-*Four partitions of a network: a) optimal partition b) suboptimal partition c) single community d) negative modularity (Image 9.16) from networksciencebook.com*
 
 To get a better intuition about the modularity metric, consider the 9-node network shown in the visualization. Visually, we would expect this network to have two communities: the group of five nodes at the left and the group of four nodes at the right.   
 
@@ -233,21 +271,21 @@ Now that we have a way to compare different community assignments, we can return
 
 Each branching point of the dendrogram corresponds to a different community assignment, i.e., a different partition of the nodes in a set of communities. So, we can calculate the modularity at each branching point, and select the branching point that leads to the highest modularity value.   
 
-**Modularity Metric – For Directed and/or Weighted Networks**
+### Metric – For Directed and/or Weighted Networks
 
 The modularity definition can be easily modified for directed and/or weighted networks.   
 
-Consider directed and unweighted networks first. Suppose that the out-degree of node i is k_i,out, and the in-degree of node j is k_j,in.
+Consider directed and unweighted networks first. Suppose that the out-degree of node i is $k_{i,out}$, and the in-degree of node j is $k_{j,in}$.
 
-Further, suppose that A_i,j = 1 if there is an edge from node i to node j – and 0 otherwise.   
+Further, suppose that $A_{i,j} = 1$ if there is an edge from node i to node j – and 0 otherwise.   
 
 We can rewrite the modularity definition as:  
 
 ![M3L07_06](imgs/M3L07_06.png)
 
-Similarly, if the network is both weighted and directed, suppose that the “out-strength” (i.e., the sum of all outgoing edge weights) of node i is s_i,out, while the in-strength of node j is s_j,in.   
+Similarly, if the network is both weighted and directed, suppose that the “out-strength” (i.e., the sum of all outgoing edge weights) of node i is s_i,out, while the in-strength of node j is $s_{j,in}$.   
 
-Further, suppose that A_i,j is the weight of the edge from node i to node j – and 0 if there is no such edge.   
+Further, suppose that $A_{i,j}$ is the weight of the edge from node i to node j – and 0 if there is no such edge.   
 
 ![M3L07_07](imgs/M3L07_07.png)
 
@@ -269,9 +307,9 @@ In more detail, suppose that community A has a number of internal links L_A and 
 
 What happens if we create a new community assignment in which A and B are merged into a single community, call it {AB}, while all other communities remain the same?  
 
-The number of internal links in {AB} is L_AB = L_A + L_B + l_AB, where l_AB is the number of external links between communities A and B.   
+The number of internal links in {AB} is $L_{AB} = L_A + L_B + l_{AB}$, where $l_{AB}$ is the number of external links between communities A and B.   
 
-The total degree of community {AB} is κ_AB = κ_A + κ_B.   
+The total degree of community {AB} is $\kappa_{AB} = \kappa_A + \kappa_B$.   
 
 Using the modularity formula we derived earlier, we can now calculate the modularity difference after merging A and B:  
 ![M3L07_08](imgs/M3L07_08.png)
@@ -292,7 +330,7 @@ This is a useful expression, showing that the merging step results in higher mod
 ![M3L07_Fig16](imgs/M3L07_Fig16.png)
 
 **Computational Complexity**
-Since the calculation of each ΔM can be done in constant time, Step-2 of the greedy algorithm requires O(L) computations. After deciding which communities to merge, the update of the matrix can be done in a worst-case time O(N). Since the algorithm requires N–1 community mergers, its complexity is O[(L + N)N], or O(N^2) on a sparse graph. 
+Since the calculation of each ΔM can be done in constant time, Step-2 of the greedy algorithm requires O(L) computations. After deciding which communities to merge, the update of the matrix (recording $l_{AB}$) can be done in a worst-case time O(N). Since the algorithm requires N–1 community mergers, its complexity is $O[(L + N)N]$, or $O(N^2)$ on a sparse graph. 
 
 **Optimized Greedy Algorithm**
 The use of data structures for sparse matrices can decrease the greedy algorithm’s computational complexity to O(N log2N). For more details please read the paper Finding community structure in very large networksLinks to an external site. by Clauset, Newman and Moore. 
@@ -311,13 +349,13 @@ Even if the original network is unweighted, the Louvain algorithm creates a weig
 
 - **Step-I**
 	- Start with a network of N nodes, initially assigning each node to a different community. For each node i, we evaluate the modularity change if we place node i in the community of any of its neighbors j.   
-	- We move node i in the neighboring community for which the modularity difference is the largest -- but only if this difference is positive. If we cannot increase the modularity by moving i, then that node stays in its original community.   
+	- We move node i in the neighboring community for which the modularity difference is the largest -- but __only if this difference is positive__. If we cannot increase the modularity by moving i, then that node stays in its original community.   
 	- This process is applied to every node until no further improvement can be achieved, completing Step-I.  
 	- The modularity change ΔM that results by merging a single node i with the community A of a neighboring node is similar to the formula we derived earlier – but for weighted networks:  
 
 		- ![M3L07_10](imgs/M3L07_10.png)
-		- where W_A is the sum of weights of all links in A, W_A,int is the sum of weights of all internal links in A, W_i is the sum of weights of all links of node i
-		- W_i,A is the sum of weights of all links between node i and any node in A, and W is the sum of weights of all links in the network.    
+		- where $W_A$ is the sum of weights of all links in A, $W_{A,int}$ is the sum of weights of all internal links in A, $W_i$ is the sum of weights of all links of node i
+		- $W_{i,A}$ is the sum of weights of all links between node i and any node in A, and W is the sum of weights of all links in the network.    
 - **Step-II**
 	- We now construct a new network (a weighted network) whose nodes are the communities identified during Step-I. The weight of the link between two nodes in this network is the sum of weights of all links between the nodes in the corresponding two communities. Links between nodes of the same community lead to weighted self-loops.  
 	- Once Step-II is completed, we have completed the first pass of the algorithm.   
@@ -328,13 +366,13 @@ Even if the original network is unweighted, the Louvain algorithm creates a weig
 	- This process generates self-loops, corresponding to links between nodes in the same community that is now merged into a single node. 
 
 **Food For Thought**
-- The description of the Louvain algorithm here is only at a high-level. We recommend you also read the original publication that proposed this algorithm. Also, show that the computational complexity of this algorithm is 
+- The description of the Louvain algorithm here is only at a high-level. We recommend you also read the original publication that proposed this algorithm. Also, show that the computational complexity of this algorithm is $O(L)$.
 
 ## Modularity Resolution
 
 You may be wondering: is the modularity metric always a reliable way to choose a community assignment? Does it ever fail to point us in the right direction? 
 
-The answer is yes. The modularity metric cannot be used to discover very small communities, relative to the size of the given network.  
+The answer is yes. The modularity metric ____cannot be used to discover very small communities__, relative to the size of the given network.  
 
 To see why recall the formula we derived earlier for the change in modularity after merging two communities A and B: 
 
@@ -349,6 +387,8 @@ To simplify, suppose that the total degree of each community is κ_l. Based on t
 
 ![M3L07_12](imgs/M3L07_12.png)
 
+$$\kappa_l < \sqrt{2L}$$
+
 In other words, a modularity maximization algorithm will always merge two communities if the total degree of each of those communities is smaller than the critical value sqrt(2L).
 
 This critical value is referred to as modularity resolution because it is the smaller community size (in terms of total degree) that a modularity maximization algorithm can detect.  
@@ -361,6 +401,17 @@ How would you try to avoid the modularity resolution issue -- and try to discove
 ## The Modularity Search Landscape 
 
 ![M3L07_Fig19](imgs/M3L07_Fig19.png)
+
+Here is an additional illustration of the modularity resolution issue. Consider the network shown in the visualization, it is a ring network in which each member of the ring is a small community of five nodes, a small click.
+
+In the community assignment A, each of these five-node clique is a separate community which is the most intuitive partitioning in this case. The modularity of this community assignment is 0.867. This is not, however, the maximum modularity value. While that shown in B is the maximum possible, note that this assignment merges every two consecutive clicks into one community.
+
+An interesting observation, however is that the modularity of A is not much lower than the maximum modularity. One is 0.867, the other is 0.871. It turns out that _this is common in practice_.
+
+First, computing the maximum modularity value is very hard computationally. It is an NP-hard problem.
+and second, the maximum modularity value may not correspond to the __most intuitive community assignment__ due to this modularity resolution issue. However, what often happens is that the maximum modularity value resides in a __plateau__, as we see here and it is not much higher than other local maxima that corresponds to different community assignments.
+
+Consequently, even though we rarely know the optimal solution to the modularity maximization problem, the various heuristics we just saw earlier can __typically compute reasonable solutions that also reside in the modularity plateau__.
 
 ## Communities Within Communities
 
@@ -378,15 +429,15 @@ At the next level (part b), we see a similar structure that is composed of five 
 
 At the third level of the hierarchy (part c), we connect in a similar manner five instances of the part-b module. Again, the module at the center is the connector of the four peripheral modules, and again the density of the connections at that level is lower than the density at the previous level.   
 
-This is of course an extreme example of hierarchical modularity – the connections are deterministic and the connectivity pattern is the same at every layer. In practice, most networks have some degree of randomness and the depth of these hierarchies may not exceed a certain maximum level for practical reasons (for example: what is the maximum hierarchical depth in your professional organization or university?)  
+This is of course an extreme example of hierarchical modularity – _the connections are deterministic and the connectivity pattern is the same at every layer_. In practice, most networks have __some degree of randomness__ and the depth of these hierarchies __may not exceed a certain maximum level__ for practical reasons (for example: what is the maximum hierarchical depth in your professional organization or university?)  
 
-Nevertheless, the deterministic structure of this toy network allows us to derive mathematically an interesting property of this network: namely, the clustering coefficient of a node in this network drops proportionally to the inverse of the node’s degree:  
+Nevertheless, the deterministic structure of this toy network allows us to derive mathematically an interesting property of this network: namely, __the clustering coefficient of a node in this network drops proportionally to the inverse of the node’s degree__:  
 
-C(k) \~= 2/k
+$$C(k) \approx 2/k$$
 
 We will not show the derivation here – it is simple however and you can find it in  your textbook.
 
-This is an interesting “signature” for this hierarchically modular network – the more connected a node is, the less interconnected its neighbors are. This is very different than random networks, without any community structure, in which the clustering coefficient is independent of the degree. 
+This is an interesting “__signature__” for this hierarchically modular network – the more connected a node is, the less interconnected its neighbors are. This is very different than random networks, without any community structure, in which the clustering coefficient is independent of the degree. 
 
 **Food For Thought**
 - Please go through the derivations for the above clustering coefficient in your textbook.
@@ -410,7 +461,7 @@ The situation is not always so clear, however. Some other networks, such as the 
 
 Finally, there are also networks in which we do not see a decreasing relation between C(k) and k, such as the mobile phone calls network or the power grid.  
 
-To summarize, hierarchical modularity is an important property of many (but not all) real-world networks, and when present, it exhibits itself with an inversely proportional between the clustering coefficient and the node degree. However, this relation is not sufficient evidence for the presence of hierarchical modularity. 
+To summarize, __hierarchical modularity__ is an important property of many (but not all) real-world networks, and when present, it exhibits itself with an inversely proportional between the clustering coefficient and the node degree. However, this relation is __not sufficient__ evidence for the presence of hierarchical modularity. 
 
 ## Hierarchical Modularity Through Recursive Community Detection
 
@@ -433,11 +484,11 @@ We contrasted the problem of community detection to the ”cleaner” problem of
 
 A key concept in the community detection problem has been the modularity of a network. This metric allows us to compare different community assignments on the same network – and to examine whether a network has a strong community structure in the first place.
 
-We also saw however that the modularity metric has a finite resolution and that we cannot detect communities of a smaller size than that resolution.   
+We also saw however that the modularity metric has __a finite resolution__ and that we cannot detect communities of a smaller size than that resolution.   
 
 We also saw a number of algorithms for community detection, including divisive and agglomerative hierarchical clustering algorithms, greedy modularity maximization, and the Louvain algorithm. The literature in this area includes 100s of algorithms but the most commonly used are those we covered here.   
 
 We also discussed the concept of hierarchical modularity – and how it relates to the relation between the clustering coefficient and node degree. 
 
-In the subsequent lesson, we will cover more advanced topics of community detection – including overlapping communities and dynamic communities. We will also cover how to compare and characterize different community structures.  
+In the subsequent lesson, we will cover more advanced topics of community detection – including __overlapping communities__ and __dynamic communities__. We will also cover how to compare and characterize different community structures.  
 
