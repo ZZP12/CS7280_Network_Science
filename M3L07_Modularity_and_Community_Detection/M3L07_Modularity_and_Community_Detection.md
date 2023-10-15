@@ -191,7 +191,7 @@ In more detail: suppose we are given a network with N nodes and __L edges__ – 
 
 We denote the degree of node i as $k_i$.   
 
-Additionally, we are given partitioning of all nodes to a set of C hypothetical communities $C_1$, $C_2$, ...$C_c$.   
+Additionally, we are given partitioning of all nodes to a set of C hypothetical communities $C_1$, $C_2$, ... $C_c$.   
 
 Our goal is to evaluate this community structure – how good it is and whether it is statistically significant.   
 
@@ -213,7 +213,7 @@ So, we can define the modularity metric based on the difference between the actu
 
 We divided by the total number of edges L, so that M is always less than 1.   
 
-Note that the modularity metric does not directly penalize any external edges, i.e., there is no term in this equation that decreases the modularity for every external edge between two communities. The more external edges exist however, the lower is the sum of the internal edges, while the sum of the expected number of random edges remains constant. In other words, the modularity metric indirectly selects community assignments that have more internal edges and fewer external edges.   
+Note that the modularity metric does not directly penalize any external edges, i.e., there is no term in this equation that decreases the modularity for every external edge between two communities. The more external edges exist however, the lower is the sum of the internal edges, while the sum of the expected number of random edges remains constant. In other words, the modularity metric __indirectly__ selects community assignments that have more internal edges and fewer external edges.   
 
 How can we use this metric to select between different community structures? It is simple: _select the set of communities that has the larger modularity value._ 
 
@@ -304,7 +304,7 @@ In the following pages, we will discuss a couple of algorithms that perform comm
 
 Before we look at these algorithms, however, let us derive a simple formula that shows how the modularity of a network increases when we merge two communities into a new community.   
 
-In more detail, suppose that community A has a number of internal links L_A and a total degree κ_A. Similarly for community B.   
+In more detail, suppose that community A has a number of internal links $L_A$ and a total degree $κ_A$. Similarly for community B.   
 
 What happens if we create a new community assignment in which A and B are merged into a single community, call it {AB}, while all other communities remain the same?  
 
@@ -353,8 +353,8 @@ Even if the original network is unweighted, the Louvain algorithm creates a weig
 	- We move node i in the neighboring community for which the modularity difference is the largest -- but __only if this difference is positive__. If we cannot increase the modularity by moving i, then that node stays in its original community.   
 	- This process is applied to every node until no further improvement can be achieved, completing Step-I.  
 	- The modularity change ΔM that results by merging a single node i with the community A of a neighboring node is similar to the formula we derived earlier – but for weighted networks:  
+	![M3L07_10](imgs/M3L07_10.png)
 
-		- ![M3L07_10](imgs/M3L07_10.png)
 		- where $W_A$ is the sum of weights of all links in A, $W_{A,int}$ is the sum of weights of all internal links in A, $W_i$ is the sum of weights of all links of node i
 		- $W_{i,A}$ is the sum of weights of all links between node i and any node in A, and W is the sum of weights of all links in the network.    
 - **Step-II**
