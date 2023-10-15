@@ -353,6 +353,7 @@ Even if the original network is unweighted, the Louvain algorithm creates a weig
 	- We move node i in the neighboring community for which the modularity difference is the largest -- but __only if this difference is positive__. If we cannot increase the modularity by moving i, then that node stays in its original community.   
 	- This process is applied to every node until no further improvement can be achieved, completing Step-I.  
 	- The modularity change ΔM that results by merging a single node i with the community A of a neighboring node is similar to the formula we derived earlier – but for weighted networks:  
+  
 	![M3L07_10](imgs/M3L07_10.png)
 
 		- where $W_A$ is the sum of weights of all links in A, $W_{A,int}$ is the sum of weights of all internal links in A, $W_i$ is the sum of weights of all links of node i
@@ -373,7 +374,7 @@ Even if the original network is unweighted, the Louvain algorithm creates a weig
 
 You may be wondering: is the modularity metric always a reliable way to choose a community assignment? Does it ever fail to point us in the right direction? 
 
-The answer is yes. The modularity metric ____cannot be used to discover very small communities__, relative to the size of the given network.  
+The answer is yes. The modularity metric __cannot be used to discover very small communities__, relative to the size of the given network.  
 
 To see why recall the formula we derived earlier for the change in modularity after merging two communities A and B: 
 
