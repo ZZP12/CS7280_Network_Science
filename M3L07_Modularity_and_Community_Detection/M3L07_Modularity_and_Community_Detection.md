@@ -334,7 +334,7 @@ This is a useful expression, showing that the merging step results in higher mod
 Since the calculation of each ΔM can be done in constant time, Step-2 of the greedy algorithm requires O(L) computations. After deciding which communities to merge, the update of the matrix (recording $l_{AB}$) can be done in a worst-case time O(N). Since the algorithm requires N–1 community mergers, its complexity is $O[(L + N)N]$, or $O(N^2)$ on a sparse graph. 
 
 **Optimized Greedy Algorithm**
-The use of data structures for sparse matrices can decrease the greedy algorithm’s computational complexity to O(N log2N). For more details please read the paper Finding community structure in very large networksLinks to an external site. by Clauset, Newman and Moore. 
+The use of data structures for sparse matrices can decrease the greedy algorithm’s computational complexity to $O(N log^2N)$. For more details please read the paper Finding community structure in very large networks by Clauset, Newman and Moore. 
 
 
 ## Louvain Algorithm
@@ -362,7 +362,7 @@ Even if the original network is unweighted, the Louvain algorithm creates a weig
 	- We now construct a new network (a weighted network) whose nodes are the communities identified during Step-I. The weight of the link between two nodes in this network is the sum of weights of all links between the nodes in the corresponding two communities. Links between nodes of the same community lead to weighted self-loops.  
 	- Once Step-II is completed, we have completed the first pass of the algorithm.   
 	- Steps I – II can be repeated in successive passes. The number of communities decreases with each pass. The passes are repeated until there are no more changes and maximum modularity is attained. 	 
-		- The visualization shows the expected modularity change ΔM_0,i for node 0. Accordingly, node 0 will join node 3, as the modularity change for this move is the largest, being ΔM_0,3=0.032.   
+		- The visualization shows the expected modularity change $ΔM_{0,i}$ for node 0. Accordingly, node 0 will join node 3, as the modularity change for this move is the largest, being $ΔM_{0,3}$=0.032.   
 	- This process is repeated for each node, the node colors corresponding to the resulting communities, concluding Step-I.   
 	- In Step-II, the communities obtained in Step-I are aggregated, building a new network of communities. Nodes belonging to the same community are merged into a single node, as shown on the top right.   
 	- This process generates self-loops, corresponding to links between nodes in the same community that is now merged into a single node. 
@@ -385,11 +385,13 @@ To see why recall the formula we derived earlier for the change in modularity af
 
 Suppose that a network consists of multiple communities, as shown in the visualization, with only a single link between any two communities. Clearly, a good community detection algorithm should not merge any of these communities  
 
-To simplify, suppose that the total degree of each community is κ_l. Based on the previous formula, if we merge any two of these connected communities the modularity difference will be: 
+To simplify, suppose that the total degree of each community is $\kappa_l$. Based on the previous formula, if we merge any two of these connected communities the modularity difference will be: 
 
 ![M3L07_12](imgs/M3L07_12.png)
 
 $$\kappa_l < \sqrt{2L}$$
+
+(note only for increasing modularity)
 
 In other words, a modularity maximization algorithm will always merge two communities if the total degree of each of those communities is smaller than the critical value sqrt(2L).
 
