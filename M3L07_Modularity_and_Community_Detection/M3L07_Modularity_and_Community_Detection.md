@@ -134,7 +134,7 @@ The visualization at the rights shows the color-coded node similarity matrix, fo
  
 ## Hierarchical Clustering Approaches – Group Similarity
 
-Image 9.10 from networksciencebook.com Three approaches, called __single, complete and average cluster similarity__, are frequently used to calculate the community similarity from the __node-similarity matrix $x_{ij}$__.
+Image 9.10 from networksciencebook.com Three approaches, called __single, complete and average cluster similarity__, are frequently used to calculate the community similarity from the __node-similarity matrix__ $x_{ij}$.
 
 ![M3L07_Fig10](imgs/M3L07_Fig10.jpeg)
 
@@ -168,9 +168,9 @@ Note that depending on where we **“cut”** the dendrogram we will end up with
 
 The computational complexity of this algorithm, which is known as **Ravasz algorithm**, is __$O(N^2)$__ because the algorithm requires: 
 
-1. $O(N^2)$for the initial calculation of the pairwise node similarities 
+1. $O(N^2)$ for the initial calculation of the pairwise node similarities 
 2. O(N) for updating the similarity between the newly formed group of nodes and all other groups – and this is performed in each iteration, resulting in $O(N^2)$
-3. $O(N\ log N)$for constructing the dendrogram.
+3. $O(N\ log N)$ for constructing the dendrogram.
 
 **Food For Thought**
 - Try to think of another agglomerative hierarchical clustering approach, based on a different similarity metric.
