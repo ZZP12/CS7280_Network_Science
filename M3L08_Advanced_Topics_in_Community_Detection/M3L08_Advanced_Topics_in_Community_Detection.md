@@ -19,45 +19,68 @@ Students will be able to:
 
 
 ## Overlapping Communities and CFinder Algorithm
+In practice, it is often the case that the network node may belong to more than one communities. Think of your social network. For instance, you probably belong to a community that covers mostly your family, another community of colleagues or classmates, a community of friends, and so on. This simple observation raises doubts about our fundamental assumption that we can partition the nodes of a network in non-overlapping communities.
+
+For example, the word "bright" is associated with the intelligence community, the astronomy community, the colors community and the light community. How can we identify communities in a network allowing the possibility that the node may belong to more than one community?
+![M3L08_Fig00](imgs/M3L08_overlapping_communities.png)
+
+The CFinder algorithm was one of the first community detection methods that can discover overlapping communities. Even though its worst case run time is exponential with the size of the network, it can be effective in networks with few thousands of nodes. The CFinder algorithm is not based on Modularity maximization. Instead it is based on the idea that the community is a dense sub graph of nodes that includes _many overlapping small cliques_. its main parameters is the size k of the small cliques. For example, if k is equal to 3, the CFinder algorithm tries to identify all triangles, which is what we see here.
+
 ![M3L08_Fig02](imgs/M3L08_Fig02.png)
+
+__Two k cliques are considered overlapping if they share $k-1$ nodes__. Two triangles for instance are overlapping if they share a link. Consider the network in this visualization, there are five k cliques for k equal to 3. The overlap matrix $O$, shows which of these k cliques are overlapping. For example cliques 1 and 2 are overlapping. if two k cliques share at least k minus one nodes, they are considered overlapping and the corresponding element of matrix $O$ is 1 otherwise iet is 0.
+
+Note that the green and purple k cliques are overlapping, as well as the gray, orange and blue cliques. Part d shows the two discovered communities projected back to the original network. Note that there is one node in this case that belongs to two communities. That node participates in three k cliques. One k clique the purple belongs to the red community, while the two other k cliques the green and orange, belong to the blue community.
+
 ![M3L08_Fig03](imgs/M3L08_Fig03.png)
+
+What would happen if we set k=4? Now we first compute all the four node cliques, part b shows just one of them. Recall that two four nodes cliques are adjacent if they share three nodes.
+
+![M3L08_Fig01](imgs/M3L08_CFinder.png)
+
+This visualization (d) shows a different toy network and the resulting set of communities when we set k=4. After computing all four node cliques, we see that here that there are four connected components of four cliques, each of them corresponding to a community. The four orange nodes here belong to more than one community.
+
 CFinder: 
 - Main parameter: size k of cliques
-- Two k cliques are considered overlapping if they share k-1 nodes -> Overlap matrix O
+- Two k cliques are considered __overlapping__ if they share $k-1$ nodes -> Overlap matrix O
 - Create connected components from overlapping communities
 
 ## Critical Density Threshold in CFinder
-![M3L08_Fig04](imgs/M3L08_Fig04.jpeg)
-*Figure 9.22 from Network Science by Albert-László Barabási*
+![M3L08_Fig04](imgs/M3L08_Fig04.png)
+*Figure 9.22
 
 An interesting question about the CFinder algorithm is whether it would detect communities even in completely random networks. A completely random network should not have any community structure.   
 
 Suppose that k=3. If the network is sufficiently dense, it will have many triangles formed strictly based on chance, and so the algorithm would detect a number of communities even though the network structure is completely random.
 
-So we can ask the following question: for a given network size n and value of k, what is the maximum density of a random network of size n so that the appearance of k-cliques is unlikely? Let's call this density as the “critical density threshold”.  
+So we can ask the following question: for a given network size n and value of k, what is the maximum density of a random network of size n so that the appearance of k-cliques is unlikely? Let's call this density as the “__critical density threshold__”.  
 
 Obviously, the higher k is, the higher the critical density threshold should be.  
 
 It is not hard to prove that the critical density threshold is:  
 ![M3L08_01](imgs/M3L08_01.png)
 
-When the density is lower than p_c(k) we expect only few isolated k-cliques. If the network density exceeds p_c(k), we observe numerous cliques that form k-clique communities. 
+When the density is __lower than__ $p_c(k)$ we expect only few isolated k-cliques. If the network density exceeds $p_c(k)$, we observe numerous cliques that form k-clique communities. 
 
-For k=2 the k-cliques are simply individual links and the critical density threshold reduces to p_c(k) = 1/n, which is the condition for the emergence of a giant connected component in Erdős–Rényi networks.
+For k=2 the k-cliques are simply individual links and the critical density threshold reduces to $p_c(k) = 1/n$, which is the condition for the emergence of a giant connected component in Erdős–Rényi networks.
 
-For k =3 the k-cliques become triangles and the critical density threshold is p_c(k) = 1/sqrt(2n).
+For k =3 the k-cliques become triangles and the critical density threshold is $p_c(k) = 1/\sqrt{2n}$.
 
 The visualization shows two random networks: one with density p=0.13 (part-a) and the other with density p=0.22 (part-b). For this network size (n=20) and for k=3, the critical density threshold is 0.16.   This means that the network of part-a is below the threshold, and indeed there are only three triangles in that network. Cfinder would report in that case that most network nodes do not belong to any community.  
 
-The network of part-b on the other hand is above the critical density threshold and it includes many triangles. Cfinder would report that all but four nodes of that network belong to communities. From the statistical perspective, this would be an incorrect conclusion.  
+The network of part-b on the other hand is above the critical density threshold and it includes many triangles. Cfinder would report that all but four nodes of that network belong to communities. From the statistical perspective, this would be __an incorrect conclusion__.  
 
 The moral of the story is that before we apply the Cfinder algorithm, we should also check whether the density of the network is below or above the critical threshold for the selected value of k. If it is larger than the threshold, we should consider larger values of k (even though this would make the algorithm more computationally intensive). 
 
 
 **Food for Thought**
-- Derive the previous expression for the critical density threshold.
-- Hint: To have a giant connected component of k-cliques, the average k-clique should have at least two adjacent k-cliques (this is known as Molloy-Reed criterion -- further discussed in Lesson-11).  Any lower network density than the critical threshold will result in a lower average than two adjacent k-cliques to a randomly chosen k-clique.
-- So, consider a given k-clique X and suppose it has an adjacent k-clique. At the critical density value the expected number of additional adjacent k-cliques to X should be one. So,  start by deriving the expression for the expected number of additional adjacent k-cliques to X, as a function of k and p. Then set that expectation equal to 1, and solve for p to derive the critical density threshold. You can simplify the expression assuming that n is very large.
+
+Derive the previous expression for the critical density threshold.
+Hint: To have __a giant connected component__ of __k-cliques__, the average k-clique should have __at least two adjacent k-cliques__ (this is known as __Molloy-Reed criterion__ -- further discussed in Lesson-11).  Any lower network density than the critical threshold will result in a lower average than two adjacent k-cliques to a randomly chosen k-clique.
+
+So, consider a given k-clique X and __suppose__ it has an adjacent k-clique. At the critical density value the expected number of __additional__ adjacent k-cliques to X should be one. So,  start by deriving the expression for the expected number of additional adjacent k-cliques to X, as a function of k and p. Then set that expectation equal to 1, and solve for p to derive the critical density threshold. You can simplify the expression assuming that n is very large.
+
+--> key is to understand the statement properly! Refer to Barabasi book Section 9.13 Advanced Topic 9.D. --> actually still don't get it. (1hr for nothing?)
 
 ## Link Clustering Algorithm
 ![M3L08_Fig05](imgs/M3L08_Fig05.jpeg)
@@ -69,9 +92,9 @@ For example, a connection between you and a family member is probably only part 
 
 So, instead of trying to compute communities by clustering nodes, we can try to compute communities by clustering links. However, how can we cluster links? We first need a similarity metric to quantify the likelihood that two links belong to the same community.  
 
-Recall that if two nodes i and j belong to the same community, we expect that they will have several common neighbors (because a community is a dense subgraph). So the similarity S((i,k),(j,k)) of two links (i,k) and (j,k)  that attach to a common node k can be evaluated based on the number of common neighbors that nodes i and j have – with the convention that the set of neighbors of a node i includes the node itself.   We normalize this number by the total number of distinct neighbors of i and j, so that it is at most equal to 1 (when the two nodes i and j have exactly the same set of neighbors). 
+Recall that if two nodes i and j belong to the same community, we expect that they will have several common neighbors (because a community is a dense subgraph). So the similarity S((i,k),(j,k)) of two links (i,k) and (j,k)  that __attach to a common node k__ can be evaluated based on the number of common neighbors that nodes i and j have – with the convention that the set of neighbors of a node i __includes the node itself__.   We normalize this number by the total number of distinct neighbors of i and j, so that it is at most equal to 1 (when the two nodes i and j have exactly the same set of neighbors). 
 
-In other words, if N(i) is the set of  neighbors of node i (including i) and N(j) is the set of neighbors of node j, then the link similarity metric is defined as:
+_In other words, if N(i) is the set of  neighbors of node i (including i) and N(j) is the set of neighbors of node j, then the link similarity metric is defined as_:
 ![M3L08_02](imgs/M3L08_02.png)
 
 Now that we have a similarity metric for pairs of links, we can follow exactly the same hierarchical clustering process we studied in the previous lesson to create a dendrogram of links, based on their pairwise similarity. 
@@ -82,7 +105,7 @@ These communities, however, even though they are non-overlapping in terms of lin
 
 This is shown in the toy example of part-e: there are four clusters of links, corresponding to three communities of nodes. Note that two of the nodes belong to more than one community.  
 
-The computational complexity of the link clustering algorithm depends on two operations; 1) the similarity computation for every pair of links, and 2) the hierarchical clustering computation. The former depends on the maximum degree in the network, which we had derived earlier as O(n^(2/α-1)) [ in L4: Maximum Degree in a Power Law Network] for power-law networks with n nodes and degree exponent α.   The latter is O(m^2), where m is the number of edges.   For sparse networks, this last term is O(n^2) and it dominates the former term. 
+The computational complexity of the link clustering algorithm depends on two operations; 1) the similarity computation for every pair of links, and 2) the hierarchical clustering computation. The former depends on the maximum degree in the network, which we had derived earlier as $O(n^{2/(α-1)})$ [ in L4: Maximum Degree in a Power Law Network] for power-law networks with n nodes and degree exponent α.   The latter is $O(m^2)$, where m is the number of edges. For sparse networks, this last term is $O(n^2)$ and it dominates the former term. 
 
 **Food for Thought** 
 - The link clustering algorithm follows a very different approach to perform community detection than all other algorithms we have discussed so far. Can you think of a potential issue with the interpretation of communities in this algorithm?
@@ -107,18 +130,18 @@ So, a first task is to create synthetically generated networks with known commun
 
 Sometimes these synthetic networks are referred to as **“benchmarks”**.  
 
-The simplest benchmark is referred to as **“Girvan-Newman (GN)”**. In this model, all communities have the same size. Additionally, any pair of nodes within the same community has the same connection probability p_int, and any pair of nodes in two different communities also has the same connection probability p_ext. Consequently, the GN benchmark cannot generate a heavy-tailed degree distribution. 
+The simplest benchmark is referred to as **“Girvan-Newman (GN)”**. In this model, all __communities have the same size__. Additionally, any pair of nodes within the same community has the same connection probability $p_{int}$, and any pair of nodes in two different communities also has the same connection probability $p_{ext}$. Consequently, the GN benchmark cannot generate a heavy-tailed degree distribution. 
 
 
-In more detail, we specify the number of communities n_c and the number of nodes in each community N_c.  
+In more detail, we specify the number of communities $n_c$ and the number of nodes in each community $N_c$.  
 
-The total number of nodes is N = n_c\*N_c. 
+The total number of nodes is $N = n_c \cdot N_c$. 
 
 We also need to specify the following parameter μ:
 
-μ = k^ext / (k^ext + k^int)
+$$μ = \frac{k^{ext}}  {(k^{ext} + k^{int})}$$
 
-where k^int is the average number of internal connections in a community and k^ext is the average number of external connections between communities. 
+where $k^{int}$ is the average number of internal connections in a community and $k^{ext}$ is the average number of external connections between communities. 
 
 If μ is close to 0 almost all connections are internal and the community is very clearly separated.  
 
@@ -132,7 +155,7 @@ The visualization shows a GN network with 128 nodes, four communities, and 32 no
 
 The GN benchmark creates communities of identical size. How realistic is this assumption, however? 
 
-Even though we typically do not have the ground-truth, there is increasing evidence that most networks have a power-law community size distribution.  
+Even though we typically do not have the ground-truth, there is increasing evidence that __most networks have a power-law community size distribution__.  
 
 This implies that most communities are quite small, maybe a tiny percentage of all nodes, but there are also few large communities with comparable size to the whole network. 
 
@@ -151,7 +174,7 @@ The situation is less clear with the Power Grid network – there are major diff
 ![M3L08_Fig09](imgs/M3L08_Fig09.jpeg)
 *Figure 9.26 from Network Science by Albert-László Barabási*
 
-The LFR benchmark (Lancichinetti-Fortunato-Radicchi) is more realistic because it generates networks with scale-free degree distribution – and additionally, the community size follows a power-law size distribution.  
+The LFR benchmark (Lancichinetti-Fortunato-Radicchi) is more realistic because it generates networks with __scale-free degree distribution__ – and additionally, the community size follows a __power-law size distribution__.  
 
 We need to specify the total number of nodes n, the parameter μ that we also saw in the GN benchmark, two exponent parameters: γ for the node degree distribution and ζ for the community size distribution, as well as the minimum and maximum values for the degree distribution and the community size distribution. 
 
@@ -173,9 +196,9 @@ Suppose that we have two community partitions, P1 and P2, of the same network. I
 
 The question we now address is: how can we compare the two partitions?  
 
-To make such comparisons in a statistical manner, we need the joint distribution p(C1_i, C2_j) of the two partitions, i.e., the probability that a node belongs to the i’th community C1_i of the first partition and the j’th community C2_j of the second partition.  
+To make such comparisons in a statistical manner, we need the joint distribution $p(C^1_i, C^2_j)$ of the two partitions, i.e., the probability that a node belongs to the i’th community $C^1_i$ of the first partition and the j’th community $C^2_j$ of the second partition.  
 
-The marginal distribution p(C1_i) of the first partition represents the probability that a node belongs to community C1_i of the first partition. Similarly for the marginal p(C2_j) of the second partition.  
+The marginal distribution $p(C^1_i)$ of the first partition represents the probability that a node belongs to community $C^1_i$ of the first partition. Similarly for the marginal $p(C^2_j)$ of the second partition.  
 
 The **“confusion matrix”** (see the visualization) can be used to calculate the previous joint distribution – as well as the two marginal distributions (last row and last column).  
 
@@ -189,7 +212,7 @@ When the two random variables represent the two community partitions of the same
 
 ## Accuracy Comparison of Community Detection Algorithms
 ![M3L08_Fig11](imgs/M3L08_Fig11.jpeg)
-*Figure 9.27 from Network Science by Albert-László Barabási*
+*Figure 9.27 from Network Science by Albert-László Barabási* (Q: how NMI computed here? what two partitions to compare?)
 
 Let's now compare some of the community detection algorithms we have seen  so far (at least those that result in non-overlapping communities).  
 
@@ -208,23 +231,20 @@ The Louvain algorithm and the Ravasz algorithm (cutting the dendrogram based on 
 
 | Name | Nature | Comp. | REF |
 | ---- | ------ | ----- | --- |
-| Ravasz | Hierarchical Agglomerative | O(N2) | [11] |
+| Ravasz | Hierarchical Agglomerative | $O(N^2)$ | [11] |
 | Girvan-Newman | Hierarchical Divisive | O(N2) | [9] |
 | Greedy Modularity | Modularity Optimization | O(N2) | [33] |
-| Greedy Modularity |
-| (Optimized) | Modularity Optimization | O(Nlog2N) | [35] |
+| Greedy Modularity (Optimized) | Modularity Optimization | $O(Nlog^2N)$ | [35] |
 | Louvain | Modularity Optimization | O(L) | [2] |
 | Infomap | Flow Optimization | O(NlogN) | [44] |
-| Clique Percolation |
-| (CFinder) | Overlapping Communities | Exp(N) | [48] |
-| Link Clustering | Hierarchical Agglomerative; |
-| Overlapping Communities | O(N2) | [51] |
+| Clique Percolation (CFinder) | Overlapping Communities | Exp(N) | [48] |
+| Link Clustering | Hierarchical Agglomerative; Overlapping Communities | O(N2) | [51] |
 
 In terms of run-time, the table summarizes the worst-case run time of each of the algorithms we have reviewed so far (we have not covered Infomap in these lectures), including the two algorithms for overlapping community detection (Cfinder and Link Clustering). N is the number of nodes. The references refer to the textbook's bibliography. 
 
 In sparse networks (where the number of links is L=O(N)) the Louvain algorithm is the fastest in terms of algorithmic complexity. In dense networks (where L=O(N^2)), the Infomap and greedy modularity maximization algorithms are faster.
 
-Remember however that most networks are sparse in practice – and these are only  worst-case asymptotic bounds. What happens in practice when we compare the run-time of these algorithms?
+Remember however that most networks are sparse in practice – and these are only  __worst-case asymptotic bounds__. What happens in practice when we compare the run-time of these algorithms?
 
 ![M3L08_Fig12](imgs/M3L08_Fig12.jpeg)
 *Figure 9.28 from Network Science by Albert-László Barabási*
@@ -244,19 +264,19 @@ In practice, many networks change over time through the creation or removal of n
 
 There are various ways in which the community structure may change from time t to time t+1, also shown in the visualization:
 
-**Growth:** a community can grow through new nodes.
+- **Growth:** a community can grow through new nodes.
 
-**Contraction:** a community can contract through node removals.
+- **Contraction:** a community can contract through node removals.
 
-**Merging:** two or more communities can merge into a single community.
+- **Merging:** two or more communities can merge into a single community.
 
-**Splitting:** one community can split into two or more communities.
+- **Splitting:** one community can split into two or more communities.
 
-**Birth:** a new community can appear at a given time.
+- **Birth:** a new community can appear at a given time.
 
-**Death:** a community can disappear at any time.
+- **Death:** a community can disappear at any time.
 
-**Resurgence:** a community can only disappear for a period and come back later.
+- **Resurgence:** a community can only disappear for a period and come back later.
 
 The problem of detecting communities in dynamic networks is more recent and there is not a single method yet that is considered generally accepted. Most approaches in the literature follow one of the following three general approaches.
 
@@ -266,13 +286,13 @@ The problem of detecting communities in dynamic networks is more recent and ther
 
 The first approach is that a community detection algorithm is applied independently on each network snapshot, without any constraints imposed by earlier or later network snapshots.
 
-Then, the communities identified at time T+1 are matched to the communities identified at time T based on maximum node and edge similarity.
+Then, the communities identified at time T+1 are matched to the communities identified at time T based on __maximum node and edge similarity__.
 
 This process is illustrated in the visualization for three successive snapshots. Note that the green community experiences gradual growth while the red community experiences contraction.
 
 The main advantage of this approach is its simplicity, given that we can apply any algorithm for community detection on static networks.
 
-Its main disadvantage however is that the communities of successive snapshots can be significantly different, not because there is a genuine change in the community structure, but because the static community detection algorithm may be unstable, producing very different results even with minor changes in the topology of the input graph.
+Its main disadvantage however is that the communities of successive snapshots can be significantly different, not because there is a genuine change in the community structure, but because the static community detection algorithm may be __unstable__, producing very different results even with minor changes in the topology of the input graph.
 
 
 ## Dynamic Communities – Approach #2
@@ -283,9 +303,9 @@ The second approach attempts to compute a good community structure at time T+1 a
 
 To do so, we need to modify the objective function of the community detection optimization problem: instead of trying to maximize modularity at time T+1, we aim to meet two goals simultaneously:  have both high modularity at time T+1 and maintain the community structure of time T as much as possible. 
 
-This is a trade-off between the quality of the discovered communities (quantified with the modularity metric) and the **”smoothness”** of the community evolution over time.
+This is a trade-off between the __quality__ of the discovered communities (quantified with the modularity metric) and the **”smoothness”** of the community evolution over time.
 
-Such dual objectives require additional optimization parameters and trade-offs, raising concerns about the robustness of the results. 
+Such dual objectives require additional optimization parameters and trade-offs, raising concerns about the __robustness__ of the results. 
 
 **Food for Thought**
 - Write down a mathematical expression for a dual optimization objective mentioned above. You know how modularity is defined. How would you define the smoothness of community evolution?
@@ -300,9 +320,9 @@ Algorithms of this type create a single **“global network"** based on all thes
 
 1. A node of even a single snapshot is also a node of the global network, and an edge of even a single snapshot is also an edge between the corresponding two nodes at the global network.
 2. Additionally, the global network includes edges between the instances of any node X at different snapshots (so if X appears at time T and at time T+1, there will be an edge between the corresponding two node instances in the global network).
-3. After creating the global network, a community detection algorithm is applied on that network to compute a “reference” community structure.
+3. After creating the global network, a community detection algorithm is applied on that network to compute a “__reference__” community structure.
 Then, that reference community structure is mapped back to each snapshot, based on the nodes and edges that are present at that snapshot.
-4. This approach usually produces the smoothest (or most stable) results – but it can miss major steps in the evolution of the community structure (such as communities that merge or split). This last point however also depends on the length of the window W.
+4. This approach usually produces the __smoothest (or most stable)__ results – but it can __miss__ major steps in the evolution of the community structure (such as communities that merge or split). This last point however also depends on the length of the window W.
 
 **Food for Thought**
 Explain in more detail the rationale for constructing the "global network" and for computing a "reference" community structure based on that network.
@@ -317,17 +337,17 @@ An interesting question is to examine the role of individual nodes within the co
 
 Is a node mostly connected to other nodes of the same community? Or is it connected to several other communities, acting as a **“bridge”** between its own community and others? A commonly used metric to answer such questions is the **Participation Coefficient** of a node, measuring the participation of that node in other communities.
 
-Suppose that we have already discovered that the network has n_c communities (or modules). Also, let k_i,s be the number of links of node i that are connected to nodes of community s, and k_i the degree of node i.
+Suppose that we have already discovered that the network has $n_c$ communities (or modules). Also, let $k_{i,s}$ be the number of links of node i that are connected to nodes of community s, and $k_i$ the degree of node i.
 
 The participation coefficient is then defined as:
 
 ![M3L08_04](imgs/M3L08_04.png)
 
-Note that if all the connections of node i are with other nodes in its own community, we have that P_i=0. An example of such a node is the highlighted node at module-two in the visualization.
+Note that if all the connections of node i are with other nodes in its own community, we have that $P_i=0$. An example of such a node is the highlighted node at module-two in the visualization.
 
-On the other hand, if the connections of node i are uniformly distributed with all n_c communities, the participation coefficient will be close to 1. This is the case with the highlighted node at module-three in the visualization.
+On the other hand, if the connections of node i are uniformly distributed with all $n_c$ communities, the participation coefficient will be close to 1. This is the case with the highlighted node at module-three in the visualization.
 
-The (loose) upper bound P_i=1 is approached for nodes with very large degree k_i, if their connections are uniformly spread to all n_c communities.
+The (loose) upper bound $P_i=1$ is approached for nodes with very large degree $k_i$, if their connections are uniformly spread to all n_c communities.
 
 **Food for Thought**
 - What is the rationale for the "squaring operation" at the previous formula? Why not just take the summation of those fractions?
@@ -339,18 +359,19 @@ The (loose) upper bound P_i=1 is approached for nodes with very large degree k_i
 Another important question is whether a node is a hub or not within its own community.
 
 A metric to answer this question is the normalized “within-module degree”:
-![M3L08_05](imgs/M3L08_05.png)
 
-where k_i is the "internal" degree of node i, considering only connections between that node and other nodes in the same community, k_i_ is the average internal degree of all nodes that belong in the community of node i, and σ_k_i is the standard deviation of the internal degree of those nodes.
+$$z_i = \frac{\kappa_i - \overline{\kappa_i}}{\sigma_{\kappa_i}}$$
 
-So, if a node i has a large internal degree, relative to the degree of other nodes in its own community, we consider it a hub within its module.
+where $\kappa_i$ is the "internal" degree of node i, considering only connections between that node and other nodes in the same community, $\overline{\kappa_i}$ is the average internal degree of all nodes that belong in the community of node i, and $\sigma_{\kappa_i}$ is the standard deviation of the internal degree of those nodes.
 
-If we combine the information provided by both the participation coefficient and the within-community degree, as shown in the visualization, we can identify four types of nodes, based on the nodes that have unusually high values of P_i and z_i:
+So, if a node i has a large internal degree, relative to the degree of other nodes in its own community, we consider it a __hub__ within its module.
 
-1. **Connector Hubs:** nodes with high values of both P_i and z_i. These are hubs within their own community that are also highly connected to other communities, forming bridges to those communities.
-2. **Provincial Hubs:** nodes with high value of z_i but low value of P_i. These are hubs within their own community but not well connected to nodes of other communities.
-3. **Connectors:** nodes with high value of P_i but low value of z_i. These are not hubs within their module – but they form bridges to other communities.
-4. **Peripheral nodes:** nodes with low values of both P_i and z_i. Everything else -- this is how the bulk of the nodes will be classified as. 
+If we combine the information provided by both the participation coefficient and the within-community degree, as shown in the visualization, we can identify four types of nodes, based on the nodes that have unusually high values of $P_i$ and $z_i$:
+
+1. **Connector Hubs:** nodes with high values of both $P_i$ and $z_i$. These are hubs within their own community that are also highly connected to other communities, forming bridges to those communities.
+2. **Provincial Hubs:** nodes with high value of $z_i$ but low value of $P_i$. These are hubs within their own community but not well connected to nodes of other communities.
+3. **Connectors:** nodes with high value of $P_i$ but low value of $z_i$. These are not hubs within their module – but they form bridges to other communities.
+4. **Peripheral nodes:** nodes with low values of both $P_i$ and $z_i$. Everything else -- this is how the bulk of the nodes will be classified as. 
 Clearly, these four types are heuristically defined and there are always nodes that would fall somewhere between these four roles.
 
 ## Case Study: Metabolic Networks
@@ -378,13 +399,13 @@ n the following we simplify the presentation of the delta-MAPS method – the re
 
 [δ-MAPS: From spatio-temporal data to a weighted and lagged network between functional domains](https://link.springer.com/article/10.1007/s41109-018-0078-z).
 
-The input is a timeseries x_i(t) for each grid point i.
+The input is a timeseries $x_i(t)$ for each grid point i.
 
-The similarity between two grid points i and j is quantified using Pearson's cross-correlation r_i,j.
+The similarity between two grid points i and j is quantified using Pearson's cross-correlation $r_{i,j}$.
 
 More advanced correlation metrics could be used instead (such as mutual information). Additionally, the correlation could be calculated at different lags.
 
-A domain A(s) with seed s (a specific grid point) is the largest possible spatially contiguous set of points including s such that their average pairwise correlation ^r(A) is greater than the parameter of the method δ.
+A domain A(s) with seed s (a specific grid point) is the largest possible spatially contiguous set of points including s such that their average pairwise correlation $\hat{r}(A)$ is greater than the parameter of the method δ.
 
 The objective of Delta-MAPS is to identify the minimum number of such maximal “domains” in the given data.
 
@@ -418,9 +439,9 @@ Finally, the algorithm identifies functional connections between domains, based 
 
 Here is a summary of the results when Delta-MAPS was applied on the Sea-Surface Temperate (SST) monthly data mentioned earlier (time period 1956-2005).  
 
-The number of grid points is 6000. Delta-MAPS identified 18 domains, showing the great potential for dimensionality reduction using this method.   
+The number of grid points is 6000. Delta-MAPS identified 18 domains, showing the great potential for _dimensionality reduction_ using this method.   
 
-35% of the grid cells do not belong to any domain.  
+35% of the grid cells _do not_ belong to any domain.  
 
 The largest and strongest (in terms of network connections) domain is the ENSO region at the Pacific ocean (domain E – see part-A and part-B). 
 
