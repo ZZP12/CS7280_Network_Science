@@ -42,44 +42,45 @@ YouTube or Twitter “influencers” today have tens of millions of followers �
 ## Diffusion, Cascades and Adoption Models
 
 ![M4L10_Fig02](imgs/M4L10_Fig02.png)
+
+- Diminishing returns theory 
+- Critical Mass Theory 
 ![M4L10_Fig03](imgs/M4L10_Fig03.png)
 
 
 ## Some Empirical Findings About Cascades
 
 ![M4L10_Fig04](imgs/M4L10_Fig04.png)
-*Image Source: [“The role of social networks in information diffusion”](https://dl.acm.org/doi/pdf/10.1145/2187836.2187907).by Bakhsy et al*
+*Image Source: [“The role of social networks in information diffusion”](https://dl.acm.org/doi/pdf/10.1145/2187836.2187907).by Bakhsy et al (2012)*
 
 Image Source: “The role of social networks in information diffusion” Links to an external site.by Bakhsy et al
 
 We summarize here some general findings that have been observed repeatedly in the last few years in the context of different social networks and experiments of social influence 
 
-The first such finding is that the probability of adoption seems to follow, at least in most cases, the diminishing returns model.
+- The first such finding is that __the probability of adoption__ seems to follow, at least in most cases, the diminishing returns model.
 
 For instance, we include here a result from a large-scale (253 million Facebook users) randomized study by Eytan Bakhshy and his collaborators. The main question was whether a user will share a Web link with his/her Facebook friends, depending on whether some of his/her friends also shared that link. The study also examined how this **“probability of link sharing”** depends on whether users were exposed to their friends’ link-sharing behavior (**“feed”**) versus those that were not exposed to such information (**“no feed”**).
 
 Note that in both cases the probability of adoption increases in a concave manner, providing support to the diminishing returns model.
 
-The authors also showed that those who are exposed to their friends’ link-sharing behavior are significantly more likely to spread information and do so sooner than those who are not exposed.
+- The authors also showed that those who are exposed to their friends’ link-sharing behavior are significantly more likely to spread information and do so sooner than those who are not exposed.
 
-The study also examined the relative role of strong and weak ties in information propagation. Although stronger ties are individually more influential, it is the more abundant weak ties that are responsible for the propagation of novel information.
+- The study also examined the relative role of strong and weak ties in information propagation. Although stronger ties are individually more influential, it is the more abundant weak ties that are responsible for the propagation of novel information.
 
 
 
 ![M4L10_Fig05](imgs/M4L10_Fig05.png)
 *Image Source: [“Everyone's an influencer: quantifying influence on Twitter”](https://dl.acm.org/doi/pdf/10.1145/1935826.1935845). by E.Bakshy et al.*
 
-Another empirical finding that has been repeatedly shown by many studies of online social networks relates to the size and depth of cascades.
+- Another empirical finding that has been repeatedly shown by many studies of online social networks relates to the size and depth of cascades.
 
 For instance, an observational study of Twitter data analyzed 74 million tweet cascades that mention a URL. The tweets originated from 1.6 million **“seed”** users during a two-month period in 2009.
 
-A first major observation is that the vast majority  (90%) of tweets do NOT trigger a network cascade. They stop at  the source. An additional 9% propagate only to one other user.
-
+- A first major observation is that the vast majority  (90%) of tweets do NOT trigger a network cascade. They stop at  the source. An additional 9% propagate only to one other user.
 However, even though very few tweets trigger a significant network cascade, it is interesting that there are also tweets that cause major cascades, with a size that exceeds 1000 users and a depth of 8 or higher.
+The distribution at the left shows that the cascade size follows a __power-law distribution__ -- note that both axes are logarithmic and the function decreases almost linearly.
 
-The distribution at the left shows that the cascade size follows a power-law distribution -- note that both axes are logarithmic and the function decreases almost linearly.
-
-The distribution at the right shows that the cascade depth follows an exponential decrease --  note that the x-axis is linear while the y-axis is logarithmic and the decrease is almost linear.
+- The distribution at the right shows that the cascade depth follows an __exponential decrease__ --  note that the x-axis is linear while the y-axis is logarithmic and the decrease is almost linear.
 
 These findings are not applicable only to Twitter cascades – similar results have been shown for most other diffusion phenomena in both offline and online social networks.
 
@@ -101,14 +102,14 @@ In the context of social influence, for example, an inactive node may not be exp
 
 Initially, the only active nodes are the sources of the cascade.
 
-Each node v has a threshold θ_v. The Linear Threshold model assumes that a node v becomes active if the cumulative input from active neighbors of v is **greater** than the threshold θ_v:
+Each node v has a threshold $θ_v$. The Linear Threshold model assumes that a node v becomes active if the cumulative input from active neighbors of v is **greater** than the threshold $θ_v$:
 
 ![M4L10_01](imgs/M4L10_01.png)
 
 **Note that nodes can only switch from inactive to active once.** 
 
 
-The Linear Threshold model is appropriate in diffusion phenomena when the **”critical mass”**theory of social influence applies.
+The Linear Threshold model is appropriate in diffusion phenomena when the **”critical mass”** theory of social influence applies.
 
 An important question is: if we only activate a certain node v_0, which are the nodes that will eventually become active? These nodes define the “activation cascade” of v_0. Note that this cascade may cover the whole network, may include only v_0, or it may be somewhere in between. Of course, the cascade of v_0 includes nodes that are reachable from v_0.
 
@@ -116,11 +117,11 @@ A common simplification of the linear threshold is the **homogeneous case** in w
 
 There are also variations of the model in which two behaviors A and B are spreading at the same time, meaning that the state of a node can take three different values (inactive, A and B). In that case, the state of a node can switch between states A and B over time.
 
-Another common variation is the **“Asynchronous Linear Threshold”** model. In that case, each edge has a certain delay. This means that different nodes can become active at different times.
+Another common variation is the **“Asynchronous Linear Threshold”** model. In that case, each edge has __a certain delay__. This means that different nodes can become active at different times.
 
-The edge delays can affect the temporal order in which nodes join the activation cascade – but they cannot change the size of the cascade. We will review an application of this model on brain networks at the end of this lesson.
+The edge delays can affect the __temporal order__ in which nodes join the activation cascade – but they cannot change the size of the cascade. We will review an application of this model on brain networks at the end of this lesson.
 
-Note: Depending on the literature, the activation threshold model can be greater than or greater than or equal to - this can vary.
+Note: Depending on the literature, the activation threshold model can be _greater than_ or _greater than or equal to_ - this can vary.
 
 **Food For Thought**
 - Explain why the size of the cascade does not depend on edge delays.
@@ -130,14 +131,14 @@ Note: Depending on the literature, the activation threshold model can be greater
 
 In some cases the activation of a node v can be triggered by a single active neighbor of v, independent of the state of other neighbors of v. The Independent Contagion model is more appropriate in such problems.
 
-Again, the state of each node can be inactive or active. If there is an edge from u to v, then the weight w_u,v of the edge in this model represents the probability that node u activates node v when the former becomes active.
+Again, the state of each node can be inactive or active. If there is an edge from u to v, then the weight $w_{u,v}$ of the edge in this model represents the __probability__ that node u activates node v when the former becomes active.
 
-Note that node u has a single chance to activate node v. Nodes stay in the active state after they have been activated.
+Note that node u has __a single chance__ to activate node v. Nodes stay in the active state after they have been activated.
 
-An important difference with the Linear Threshold model is that the Independent Contagion model is probabilistic, and so the activation cascade of a seed node v has to be described statistically.
+An important difference with the Linear Threshold model is that the Independent Contagion model is probabilistic, and so the activation cascade of a seed node v has __to be described statistically__.
 
 **Food For Thought**
-- Explain why the Independent Contagion model is consistent with the Diminishing Returns theory of social influence. 
+- Explain why __the Independent Contagion model is consistent with the Diminishing Returns theory of social influence__. 
 
 ## Deffuant Model For Opinion or Consensus Formation
 
@@ -149,21 +150,21 @@ For example, our opinion about the risk of a potential COVID-19 infection may va
 
 Typically, our opinion about such matters depends on the opinion of our social contacts.
 
-The Deffuant model of opinion (or consensus) formation assumes that the state of a node v at time t is a scalar s_v(t) that falls between 0 and 1.
+> The Deffuant model of opinion (or consensus) formation assumes that the state of a node v at time t is a scalar s_v(t) that falls between 0 and 1.
 
 A key parameter of the model is the **“tolerance threshold”** δ:
 
-If the state of two connected nodes, say u and v, is greater than the threshold δ: |s_v(t) - s_u(t)| >= δ, the two neighbors “disagree” so strongly that they do not influence each other, and their state remains as is.
+If the state of two connected nodes, say u and v, is greater than the threshold δ: $|s_v(t) - s_u(t)| >= δ$, the __two neighbors “disagree” so strongly that they do not influence each other__, and their state remains as is.
 
 Otherwise, if |s_v(t) - s_u(t)| < δ,  then they influence each other, changing their state at the next time instant as follows:
 
-s_v(t+1) = s_v(t) + μ[s_u(t) - s_v(t)]
+$s_v(t+1) = s_v(t) + μ[s_u(t) - s_v(t)]$
 
 and
 
-s_u(t+1) = s_u(t) - μ[s_u(t) - s_v(t)]
+$s_u(t+1) = s_u(t) - μ[s_u(t) - s_v(t)]$
 
-where μ is the "convergence" parameter of the model.
+where μ is the __"convergence"__ parameter of the model.
 
 If μ = 1/2, then the state of the two nodes will become identical at time t+1. Typically μ is set to a value between 0 and ½ to capture that the two neighbors may not reach complete agreement.
 
@@ -195,7 +196,7 @@ In some cases, the behavior of nodes in a social network can be captured more re
 
 Let us illustrate this class of models with a simple coordination game. Each player can choose to either **“Cooperate”** (work with others) or **“Defect”** (act selfishly).
 
-Cooperating with a neighboring player comes at a cost c (independent of the strategy of that neighbor). If two players cooperate, they both get a benefit b from their connection.
+Cooperating with a neighboring player comes __at a cost c (independent of the strategy of that neighbor)__. If two players cooperate, they both get a benefit b from their connection.
 
 Of course, it only makes sense to cooperate if b > c.
 
@@ -226,6 +227,8 @@ This illustrates how selfish behavior may quickly spread on a network, even if i
 ![M4L10_Fig10](imgs/M4L10_Fig10.png)
 ![M4L10_Fig11](imgs/M4L10_Fig11.png)
 ![M4L10_Fig12](imgs/M4L10_Fig12.png)
+
+assuming the linear threshold as 1: 
 ![M4L10_Fig13](imgs/M4L10_Fig13.png)
 ![M4L10_Fig14](imgs/M4L10_Fig14.png)
 
@@ -243,7 +246,7 @@ Suppose that a function f(X) maps a finite subset X of elements from a ground se
 
 ![M4L10_02](imgs/M4L10_02.png)
 
-In other words, the marginal gain from adding an element v to a set X is at least as high as the marginal gain from adding the same element to a superset T of X.
+__In other words, the marginal gain from adding an element v to a set X is at least as high as the marginal gain from adding the same element to a superset T of X.__
 
 Dr. Nemhauser (a professor at Georgia Tech) and his colleagues proved the following facts about monotone and submodular functions:
 
@@ -253,7 +256,7 @@ Dr. Nemhauser (a professor at Georgia Tech) and his colleagues proved the follow
 The previous result is very important in practice because it means that, even though the greedy algorithm is suboptimal, we have a reasonable bound on its distance from the optimal solution.
 
 **Food For Thought**
-- Prove that a non-negative linear combination of a set of submodular functions is also a submodular function.
+- __Prove that a non-negative linear combination of a set of submodular functions is also a submodular function__.
 
 ## Monotone and Submodular Function
 
@@ -296,9 +299,9 @@ How do such communities affect the extent of diffusion processes, such as those 
 
 Is it that the community structure facilitates or inhibits the diffusion of information on networks?
 
-To make this analysis more concrete, let us start with a quantitative definition of a network community structure:
+To make this analysis more concrete, let us start with __a quantitative definition of a network community structure__:
 
-We say that a set of nodes C forms a cluster (or community) of density p if **every node in that set has at least a fraction p of its neighbors in the set C**.
+> We say that a set of nodes C forms a cluster (or community) of density p if **every node in that set has at least a fraction p of its neighbors in the set C**.
 
 The visualization shows three such clusters of nodes, each of them containing four nodes, with density p=2/3.
 
@@ -328,9 +331,9 @@ This is the main result we will establish on the next page.
 
 We will first prove the following result:
 
-Suppose that we model the diffusion process using the Linear Threshold Model with threshold value θ.
-
-If the set of initially active nodes is A, then the cascade will NOT cover the whole network if the network includes a cluster of initially inactive nodes with density greater than 1 - θ.
+> Suppose that we model the diffusion process using the Linear Threshold Model with threshold value θ.
+> 
+> _If the set of initially active nodes is A, then the cascade will NOT cover the whole network if the network includes a cluster of initially inactive nodes with density greater than 1 - θ_.
 
 **Proof:** We will prove this by contradiction - we start with an assumption, then following a series of steps which leads to a result that cannot be true. Consider such a cluster of initially inactive nodes with density greater than 1 - θ. Assume the opposite of what we want to prove, i.e., that one or more nodes in this cluster eventually become active. Let v be the **first** such node in the cluster. 
 
@@ -338,7 +341,7 @@ At the time v became active, its only active neighbors could be outside the clus
 
 Moreover, we can show the following related result:
 
-If a network cascade that starts from a set of initial nodes A does not cover the whole network, then the network must include a cluster of density greater than 1 - θ.
+> If a network cascade that starts from a set of initial nodes A does not cover the whole network, then the network must include a cluster of density greater than 1 - θ.
 
 **Food For Thought**
 ![M4L10_Fig20](imgs/M4L10_Fig20.png)
@@ -388,6 +391,3 @@ This lesson focused on information diffusion processes on networks.
 - We also considered the effect of community structure on the extent of the diffusion process on a network.
 
 - Finally, we presented a case study of a network diffusion process on brain networks, in the context of multi-sensory integration.
-
-
-
