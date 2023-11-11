@@ -52,9 +52,9 @@ The visualization at the right shows simulation results of a G(n,p) network with
 
 ![M4L11_Fig02](imgs/M4L11_Fig02.jpeg)
 
-The y-axis shows, again, the probability that a node belongs in the largest connected component of the graph after we remove a fraction f of the nodes, normalized by the same probability when f=0. 
+The y-axis shows, again, __the probability that a node belongs in the largest connected component of the graph after we remove a fraction f of the nodes, normalized by the same probability when $f=0$__. 
 
-In the case of random failures, note that the critical threshold f_c is about 0.65-0.70. After that point, the network is broken into small clusters of connected nodes and isolated nodes. 
+In the case of random failures, note that the critical threshold $f_c$ is about 0.65-0.70. After that point, the network is broken into small clusters of connected nodes and isolated nodes. 
 
 The same plot also shows what happens when we **attack** the highest-degree nodes of the network. We will come back to this curve a bit later in this Lesson. 
 
@@ -77,7 +77,7 @@ If the **largest connected component (LCC)** of a network covers almost all node
 
 To derive the critical threshold of an inverse percolation process, we need a mathematical condition for the emergence of the giant component in a random network  (including power-law networks). This condition is referred to as **Molloy-Reed criterion (or principle)**: 
 
-Consider a random network that follows the configuration model with degree distribution p(k) (i.e., there are no degree correlations). **The Molloy-Reed criterion states that the average degree of a node in the giant component should be at least two.**
+Consider a random network that follows the configuration model with degree distribution p(k) _(i.e., there are no degree correlations)_. **The Molloy-Reed criterion states that the average degree of a node in the giant component should be at least two.**
 
 
 Intuitively, if the degree of a node in the LCC is less than 2, that node is part of the LCC but it does not help to **expand** that component by connecting to other nodes. So, in order for the LCC to expand to almost all network nodes (i.e., in order for the LCC to be the giant component), the average degree of a node in the LCC should be at least two. 
@@ -103,7 +103,7 @@ Suppose that j is a node that connects to the LCC through an LCC node i.
 
 **This is a remarkable result that needs further discussion: it means that such networks stay  connected in a single component even as we remove almost all their nodes.** Intuitively, this happens because networks with diverging degree variance have hubs with very large degree. Even if we remove a large fraction of nodes, it is unlikely that we remove all the hubs from the network, and so the remaining hubs keep the network connected. 
 
-The situation is not very different **if we randomly remove links** instead of nodes, as shown in Figure (b). Here, we remove a fraction f of all links in the network. It can be shown that the network’s giant connected component disappears at the same critical threshold as in the case of node removals. The visualization in Figure (b) refers to a G(n,p) network in which n=10,000 nodes and the average degree is k_ = 2. As predicted by the critical threshold equation, the giant component disappears when we remove 1-(1/2)=50% of all edges. For lower values of f, the effect of random node removals is more detrimental than the effect of random link removals (why?). 
+The situation is not very different **if we randomly remove links** instead of nodes, as shown in Figure (b). Here, we remove a fraction f of all links in the network. It can be shown that the network’s giant connected component disappears __at the same critical threshold__ as in the case of node removals. The visualization in Figure (b) refers to a G(n,p) network in which n=10,000 nodes and the average degree is k_ = 2. As predicted by the critical threshold equation, the giant component disappears when we remove 1-(1/2)=50% of all edges. For lower values of f, the effect of random node removals is more detrimental than the effect of random link removals (why?). 
 
 What happens with power-law networks in which the degree exponent γ is larger than 3? In that case the degree variance is finite, and so we can use the critical threshold equation to calculate the maximum value of f that does not break the network’s giant component. Figure (c ) shows numerical results of three values of γ – the network size is n=10,000 and the minimum node degree k_min = 2. 
 
@@ -117,7 +117,7 @@ What happens in the case of attacks to the higher-degree nodes? What is the crit
 ![M4L11_Fig05](imgs/M4L11_Fig05.png)
 *Image Source: Network Science by Albert-László Barabási.*
 
-Let us start with some simulations. Figure (a) contrasts the case of random failures and attacks in a G(n,p) network with n=10,000 nodes and average degree k_ = 3. The y-axis shows, as in the previous page, the probability that a node belongs in the largest connected component of the graph after we remove a fraction f of the nodes,  normalized by the same probability when f=0. In the case of random failures, the critical threshold f_c is about 0.65-0.70 -- the theoretical prediction for an infinitely large network is 1 - 1/k_ = 2/3. 
+Let us start with some simulations. Figure (a) contrasts the case of random failures and attacks in a G(n,p) network with n=10,000 nodes and average degree k_ = 3. The y-axis shows, as in the previous page, the probability that a node belongs in the largest connected component of the graph after we remove a fraction f of the nodes,  normalized by the same probability when f=0. In the case of random failures, the critical threshold $f_c$ is about 0.65-0.70 -- the theoretical prediction for an infinitely large network is $1 - 1/\bar{k} = 2/3$. 
 
 The same plot shows what happens when we “attack” the highest-degree nodes of the network.  Specifically, we remove nodes iteratively, each time removing the node with the largest remaining degree, until we have removed a fraction f of all nodes. 
 
@@ -129,18 +129,20 @@ Figure (b) contrasts random failures and attacks for a power-law network n=10,00
 
 The moral of the story is that **even though power-law networks are robust to random failures, they are very fragile to attacks on their higher degree nodes.** 
 
-The mathematical analysis of this attack process is much harder (you can find it in your textbook in “Advanced topics 8.F”) and it does not lead to a closed-form solution for the critical threshold f_c. 
+The mathematical analysis of this attack process is much harder (you can find it in your textbook in “Advanced topics 8.F”) and it does not lead to a closed-form solution for the critical threshold $f_c$. 
 
-Specifically, if the network has a power-law degree distribution with exponent γ and with minimum degree k_min, then the critical threshold f_c for attacks is given by the numerical solution of the equation:
+Specifically, if the network has a power-law degree distribution with exponent γ and with minimum degree $k_{min}$, then the critical threshold $f_c$ for attacks is given by the numerical solution of the equation:
+
+$f_c^{\frac{2-\gamma}{1-\gamma}} = 2 + \frac{2-\gamma}{3-\gamma}k_{min}(f_c^{\frac{3-\gamma}{1-\gamma}} - 1)$
 
 Figure (c) shows numerical results for the critical threshold as a function of the degree exponent γ, for two values of k_min, and separately for failures and attacks. 
 
 The key points from this plot are:
 
-- In the case of random failures, f_c decreases with γ – this is expected because as γ decreases towards 3, the degree variance increases, creating hubs with higher-degree.
-- In the case of attacks, however, the relation between f_c and γ is more complex, and it also depends on k_min. In the case of k_min=3, as γ decreases, f_c decreases because the degree variance increases, the hubs have an even greater degree, and removing them causes more damage in the network’s giant component. 
-- As expected, for given values of γ and k_min, attacks always have a smaller f_c than random failures. 
-- As γ increases, and for a given value of k_min, the critical threshold f_c for attacks approaches the critical threshold for random failures. The reason is that as γ increases, the variance of the degree distribution decreases. In the limit, the degree variance becomes zero and all nodes have the same degree. In that case, it does not matter if we remove nodes randomly or through attacks. 
+- In the case of random failures, $f_c$ decreases with γ – this is expected because as γ decreases towards 3, the degree variance increases, creating hubs with higher-degree.
+- In the case of attacks, however, the relation between $f_c$ and γ is more complex, and it also depends on $k_{min}$. In the case of $k_{min}$=3, as γ decreases, f_c decreases because the degree variance increases, the hubs have an even greater degree, and removing them causes more damage in the network’s giant component. 
+- As expected, for given values of γ and $k_{min}$, attacks always have a smaller f_c than random failures. 
+- As γ increases, and for a given value of $k_{min}$, the critical threshold f_c for attacks approaches the critical threshold for random failures. The reason is that as γ increases, the variance of the degree distribution decreases. In the limit, the degree variance becomes zero and all nodes have the same degree. In that case, it does not matter if we remove nodes randomly or through attacks. 
 
 ## Small-world Networks and Decentralized Search
 
@@ -160,19 +162,19 @@ Milgram’s experiment has been repeated by others, both in offline and online s
 
 - 1) Even global social networks (Facebook has around one billion users) have multiple short paths to reach almost anyone in the network (typically around 5-6 hops, and almost always less than 10 hops). 
 
-- 2) It is possible to find at least one of these short paths with strictly local information about the name and location of your neighbors, without having a global "map" (topology) of the network – and without a central directory that stores everyone’s name and location in the network. 
+- 2) It is possible to find at least one of these short paths __with strictly local information__ about the name and location of your neighbors, without having a global "map" (topology) of the network – and without a central directory that stores everyone’s name and location in the network. 
 
 The first point should not be surprising to us by now. Recall what we learned about Small World networks in Lesson-5. A network can have both strong clustering (i.e., many triangles, just as a regular network) and short paths (increasing logarithmically with the size of the network, just as G(n,p) networks). The way this is achieved in the **Watts-Strogatz model** is that we start from a regular network with strong clustering and rewire a small fraction (say 1%) of edges to connect two random nodes. These random connections connect nodes that can be anywhere in the network – and so for large networks, these random connections provide us with **“long-range shortcuts”**. If you do not recall these points, please review Lesson-5. 
 
-Let us now focus on the second point: how is it possible to find a target node in a network with only local information, through a distributed search process? First, let us be clear about the information that each node has: a node v knows its own location in the network (in some coordinate system), the locations of only the nodes it is connected to, and the location of the target node.
+Let us now focus on the second point: how is it possible to find a target node in a network with only local information, through a distributed search process? First, let us be clear about the information that each node has: a node v knows _its own location in the network (in some coordinate system), the locations of only the nodes it is connected to, and the location of the target node_.
 
 The metric we will use to evaluate this distributed search process is the **“expected delivery time”**, i.e., the expected number of steps required to reach the target, over randomly chosen source and target nodes, and over a randomly generated set of long-range links. 
 
 To answer the previous question, we will consider an elegant model developed by Jon Kleinberg. Suppose that we start with a regular grid network in k-dimensions (the visualizations shown refer to k=2 but you can imagine mesh networks of higher dimensionality). Each node is connected to its nearest neighboring nodes in the grid. Note that this network does not have cliques of size-3 (triangles) but it still has strong clustering in groups of nodes that are within a distance of two hops from each other.
 
-Let d(v,w) be the distance between nodes v and w in this grid. Kleinberg’s model adds a random edge out of v, pointing to a node w with a probability that is proportional to d(v,w)^(-q) – the exponent q is the key parameter of the model as we will see shortly. 
+Let d(v,w) be the distance between nodes v and w in this grid. Kleinberg’s model adds a random edge out of v, pointing to a node w with a probability that is proportional to $d(v,w)^{-q}$ – the exponent q is the key parameter of the model as we will see shortly. 
 
-The value of q controls how “spread out” these random connections actually are. If q=0, the random connections can connect any two nodes, independent of their distance (this is the case in the Watts-Strogatz model) – and so they are not very useful in decentralized search, when you try to “converge” to a certain target in as few steps as possible. If q is large, on the other hand, the random connections only connect nearby nodes – and so they will not provide the long-range shortcuts that are necessary for Small World property.
+The value of q controls how “spread out” these random connections actually are. If q=0, the random connections can connect any two nodes, independent of their distance (this is the case in the Watts-Strogatz model) – and so they are not very useful __in decentralized search, when you try to “converge” to a certain target in as few steps as possible_. If q is large, on the other hand, the random connections only connect nearby nodes – and so they will not provide the long-range shortcuts that are necessary for Small World property.
 
 The visualization contrasts the case of a small q and a large q. What do you think would be the optimal value of q, so that the decentralized search process has the minimum expected delivery?
 
@@ -190,12 +192,12 @@ As expected, values of q that are either close to 0 or quite large result in ver
 
 It appears that **the optimal value of the exponent q is when it is close to 2** – which, remember, is also the value of the dimension k in these simulations. Is this a coincidence?
 
-The answer is that we can prove that the optimal value of q is equal to k. In other words, if we want to maximize the speed of a decentralized search in a k-dimensional world, we should have random **“shortcut links”** the probability of which decays as d(v,w)^(-k) with the distance between two nodes. This surprising result was proven by Kleinberg in 2000. 
+The answer is that we can prove that the optimal value of __q is equal to k__. In other words, _if we want to maximize the speed of a __decentralized search__ in a k-dimensional world, we should have random **“shortcut links”** the probability of which decays as $d(v,w)^{-k}$ with the distance between two nodes_. This surprising result was proven by Kleinberg in 2000. 
 
 You can find the proof, at least for k=1 and 2, in the online textbook **“Networks, Crowds and Markets”** by Easley and Kleinberg (section 20.7). On the next page, we give the basic intuition  behind this result. 
 
 **Food For Thought**
-- Why do you think that the average delivery time increases much faster when q>2 than when q<2?
+- Why do you think that the average delivery time increases much faster when q>2 than when q<2? --> favors more local links with larger q. 
 
 ## Why The Optimal Value of q is Equal to Two in a Two-Dimensional World?
 
@@ -210,13 +212,13 @@ If v has a link to a node inside that group, then it can use that link to get cl
 
 So, what is the probability that v has a link to a node inside that group? And how many nodes are expected to be in that distance range?
 
-In a two-dimensional world, the area around a certain point (node v) grows with the square of the radius of a circle that is centered at v. So, the total number of nodes in the group that are at a distance between d and 2d from v is proportional to d^2.
+In a two-dimensional world, the area around a certain point (node v) grows with the square of the radius of a circle that is centered at v. So, the total number of nodes in the group that are at a distance between d and 2d from v is proportional to $d^2$.
 
-On the other hand, the probability that node v links to any node in that group scales as d(v,w)^(-2), when q=k=2. So, if node w is at a distance between d and 2d from v, the probability that it is connected to v is proportional to d^(-2).
+On the other hand, the probability that node v links to any node in that group scales as $d(v,w)^{-2}$, when $q=k=2$. So, if node w is at a distance between d and 2d from v, the probability that it is connected to v is proportional to $d^{-2}$.
 
-Hence, the number of nodes that are at a distance between d and 2d from v, and the probability that v connects to one of them, roughly cancel out. This means that the probability that a random edge links to a node in the distance range [d,2d] is independent of d.
+Hence, the number of nodes that are at a distance between d and 2d from v, and the probability that v connects to one of them, roughly cancel out. This means that the probability that a random edge links to a node in the distance range $[d,2d]$ is independent of d.
 
-In other words, when q=k=2, the long-range links are formed in a way that **“spreads them out”** roughly uniformly over all different resolution scales. This is the key point behind Kleinberg’s result. 
+In other words, when $q=k=2$, the long-range links are formed in a way that **“spreads them out”** _roughly uniformly over all different resolution scales_. This is the key point behind Kleinberg’s result. 
 
 If the exponent q was lower than k=2, the long-range links would be spread out non-uniformly in favor of larger distances, while if q was larger than k=2, the long-range links would be spread out non-uniformly in favor of shorter distances. 
 
@@ -234,7 +236,7 @@ First, in practice, people do not “live” on a regular grid. In the US, for i
 
 We can now modify Kleinberg’s model so that the random links are formed based on node ranks, rather than rank distances. In Figure (b), we see that when nodes have a uniform population density, a node w at distance d from v will have a rank that is proportional to d^2, since all nodes inside a circle of radius d will be closer to v than w.
 
-In fact, it can be proven that, for any population density – not just uniform – if the random links are formed with a probability that is proportional to 1/rank_v(w), the resulting network will have minimum expected delivery time – note that the exponent, in this case, is 1, not 2. 
+In fact, it can be proven that, for any population density – not just uniform – if the random links are formed with a probability that is proportional to $1/rank_v(w)$, the resulting network will have minimum expected delivery time – note that the exponent, in this case, is 1, not 2. 
 
 ![M4L11_Fig12](imgs/M4L11_Fig12.png)
 
@@ -248,11 +250,13 @@ One plausible explanation is that the network is not static – but instead, it 
 
 ## Synchronization of Coupled Network Oscillators
 
+![M4L11_sync](imgs/M4L11_Fig13_sync.png)
 ![M4L11_Fig13](imgs/M4L11_Fig13.png)
 ![M4L11_Fig14](imgs/M4L11_Fig14.png)
 ![M4L11_Fig15](imgs/M4L11_Fig15.png)
 ![M4L11_Fig16](imgs/M4L11_Fig16.png)
 ![M4L11_Fig17](imgs/M4L11_Fig17.png)
+synchronization may not always be desirable, too much synchronization in brain causing seizure. 
 ![M4L11_Fig18](imgs/M4L11_Fig18.png)
 
 **Food For Thought**
@@ -260,23 +264,23 @@ One plausible explanation is that the network is not static – but instead, it 
 
 ## Coupled Phase Oscillators – Kuramoto Model
 
-Collective synchronization phenomena can be complex to model mathematically. The class of models that have been studied more extensively focuses on coupled phase oscillators. 
+__Collective synchronization phenomena__ can be complex to model mathematically. The class of models that have been studied more extensively focuses on coupled phase oscillators. 
 
-Suppose that we have a system of N oscillators. The j’th oscillator is a sinusoid function with angular frequency ω_j. To simplify suppose that the amplitude of all oscillators is the same (set to 1). 
+Suppose that we have a system of N oscillators. The j’th oscillator is a sinusoid function with angular frequency $ω_j$. To simplify suppose that the amplitude of all oscillators is the same (set to 1). 
 
 If the oscillators were decoupled, the dynamic phase Φ_j(t) of oscillator j would be described by the differential equation:
 
-dΦ / dt = ω_j
+$dΦ / dt = ω_j$
 
 Things get more interesting however when the oscillators are coupled (the exact mechanism that creates this coupling does not matter here) so that the angular velocity of each oscillator depends on the phase of all other oscillators, as follows:
 
 ![M4L11_05](imgs/M4L11_05.png)
 
-where K>0 is the coupling strength. In other words, the angular velocity of oscillator i is not just its “natural” frequency ω_i – instead the angular velocity is adjusted by the product of K and the average of the sin(Φ_j - Φ_i) terms. 
+where $K>0$ is the __coupling strength__. In other words, the angular velocity of oscillator i is not just its “natural” frequency $ω_i$ – instead the angular velocity is adjusted by the product of K and the average of the $sin(\phi_j - \phi_i)$ terms. 
 
-This model was introduced by Yoshiki Kuramoto, and it carries his name (Kuramoto model). Suppose we only have N=2 oscillators, i and j. If the j’th oscillator is ahead of the i’th oscillator at time t (i.e., Φ_j(t) - Φ_i(t), with Φ_j(t) - Φ_i(t) < π), then the j’th oscillator adds a positive term in the angular velocity of the i’th oscillator, accelerating the latter and pulling it closer to the j’th oscillator. Similar, the i’th oscillator adds a negative term in the angular velocity of the j’th oscillator causing it to slow down, and also pulling it closer to the i’th oscillator.  Will the two oscillators end up synchronized, i.e., having Φ_j(t) = Φ_i(t) for all time? 
+This model was introduced by Yoshiki Kuramoto, and it carries his name (Kuramoto model). Suppose we only have N=2 oscillators, i and j. If the j’th oscillator is ahead of the i’th oscillator at time t (i.e., $Φ_j(t) > Φ_i(t)$, with $Φ_j(t) - Φ_i(t) < π$), then the j’th oscillator adds a positive term in the angular velocity of the i’th oscillator, accelerating the latter and pulling it closer to the j’th oscillator. Similar, the i’th oscillator adds a negative term in the angular velocity of the j’th oscillator causing it to slow down, and also pulling it closer to the i’th oscillator.  Will the two oscillators end up synchronized, i.e., having $Φ_j(t) = Φ_i(t)$ for all time? 
 
-That depends on the magnitude of K, relative to the magnitude of the difference of the two natural frequencies |ω_i - ω_j|. Intuitively, the larger the difference of the two natural frequencies, the larger the coupling strength should be so that the two oscillators synchronize. 
+That depends on the magnitude of K, relative to the magnitude of the difference of the two natural frequencies $|ω_i - ω_j|$. Intuitively, the larger the difference of the two natural frequencies, the larger the coupling strength should be so that the two oscillators synchronize. 
 
 ![M4L11_Fig19](imgs/M4L11_Fig19.png)
 
@@ -288,7 +292,7 @@ The plot shows the phase difference between individual oscillators (only 18 out 
 
 The two smaller plots inside the left figure show the initial state (the 100 oscillators are uniformly distributed on the unit cycle of the complex plane) as well as the final state in which the oscillators are almost perfectly synchronized. 
 
-Let us now introduce a synchronization metric that will allow to measure how close N oscillators are to complete synchronization. Recall from calculus that a sinusoidal oscillator with phase φ(t) and unit magnitude can be represented in the complex plane as e^(iφ(t)), where i is the imaginary unit. 
+Let us now introduce a synchronization metric that will allow to measure how close N oscillators are to complete synchronization. Recall from calculus that a sinusoidal oscillator with phase φ(t) and unit magnitude can be represented in the complex plane as $e^{iφ(t)}$, where i is the imaginary unit. 
 
 The average of these N complex numbers is another complex number r(t) with magnitude R(t) and phase Φ(t):
 
@@ -323,7 +327,7 @@ Let us start with  the simpler case in which each oscillator is coupled with eve
 
 The initial phase of each oscillator is randomly distributed in [0, 2π). The coupling network between oscillators, in this case, can be thought of as a clique with equally weighted edges: each oscillator has the same coupling strength with every other oscillator. 
 
-Further, let us assume that the natural angular velocities of the N oscillators follow a unimodal and symmetric distribution around its mean E[ω_i] = Ω.
+Further, let us assume that the natural angular velocities of the N oscillators follow a unimodal and symmetric distribution around its mean $E[ω_i] = Ω$.
 
 When do these N oscillators get synchronized? It all depends on how strong the coupling strength K is relative to the maximum difference of the oscillator natural frequencies. 
 
@@ -337,19 +341,19 @@ The visualization shows the asymptotic value of the order parameter R(t) (as t t
 
 For smaller values of K, the oscillators remain incoherent (i.e., not synchronized). 
 
-As K approaches a critical value K_c (around 0.16 in this case), we observe a phase transition that is referred to as the **“onset of synchronization”**. 
+As K approaches a critical value $K_c$ (around 0.16 in this case), we observe a phase transition that is referred to as the **“onset of synchronization”**. 
 
-For larger values of K > K_c, the order parameter R increases asymptotically towards one, suggesting that the oscillators get completely synchronized. 
+For larger values of $K > K_c$, the order parameter R increases asymptotically towards one, suggesting that the oscillators get completely synchronized. 
 
-For the asymptotic case of very large N, Kuramoto showed that as K increases, the system of N oscillators shows a phase transition at a critical threshold K_c. 
+For the asymptotic case of very large N, Kuramoto showed that as K increases, the system of N oscillators shows a phase transition at a critical threshold $K_c$. 
 
 At that threshold, the system moves rapidly from a de-coherent state to a coherent state in which almost all oscillators are synchronized (and so the order parameter R increases rapidly from 0 to 1). 
 
 A necessary condition for the onset of complete synchronization is that
 
-K >= K_c = 2 / πΩ
+$K \geq K_c = \frac{2}{πΩ}$
 
-This visualization shows numerical results from simulations with N=100 oscillators in which the average angular frequency is Ω = 4 rads/sec, and K_c \~= 0.16.
+This visualization shows numerical results from simulations with N=100 oscillators in which the average angular frequency is Ω = 4 rads/sec, and $K_c \approx 0.16$.
 
 **Food For Thought**
 - Try to derive the Kuramoto critical coupling threshold given on this page. 
@@ -364,11 +368,11 @@ First, in the case of an undirected network with adjacency matrix A, the Kuramot
 
 ![M4L11_09](imgs/M4L11_09.png)
 
-A common approximation (referred to as “degree block assumption” – we have also seen it in Lesson-9) is to ignore any degree correlations in the network, and substitute A_i,j with its expected value according to the configuration model:
+A common approximation (referred to as “degree block assumption” – we have also seen it in Lesson-9) is to ignore any degree correlations in the network, and substitute $A_{i,j}$ with its expected value according to the configuration model:
 
 ![M4L11_10](imgs/M4L11_10.png)
 
-where k_ = 2m/N is the average node degree, and m is the number of edges.
+where $\bar{k} = 2m/N$ is the average node degree, and m is the number of edges.
 
 Under this approximation, the Kuramoto model can be written as:
 
@@ -380,14 +384,14 @@ Under this approximation, a necessary condition for the onset of synchronization
 
 ![M4L11_12](imgs/M4L11_12.png)
 
-where k_^2 is the second moment of the degree distribution.
+where $\bar{k^2}$ is the second moment of the degree distribution.
 
-This formula predicts a very interesting result: for power-law networks with degree exponent 2 < γ <= 3, the network will always get synchronized, even for a very small K, because the second moment k_^2 diverges. 
+This formula predicts a very interesting result: __for power-law networks with degree exponent 2 < γ <= 3, the network will always get synchronized, even for a very small K__, because the second moment $\bar{k^2}$ diverges. 
 
 ![M4L11_Fig22](imgs/M4L11_Fig22.png)
 *Image Source:  [“Synchronization in complex networks”](https://core.ac.uk/download/pdf/71321767.pdf). by Arenas et al.*
 
-The visualization shows simulation results of heterogeneous oscillators on power-law networks with degree exponent γ = 3 (the networks are constructed with the Preferential Attachment model). The natural frequencies of the oscillators vary uniformly in the interval . The onset of synchronization is not exactly at 0 – but close to 0.05. The small deviation from the theoretically predicted result does not seem to be a consequence of finite N because the critical threshold remains close to 0.05 even as N increases. 
+The visualization shows simulation results of heterogeneous oscillators on power-law networks with degree exponent γ = 3 (the networks are constructed with the Preferential Attachment model). The natural frequencies of the oscillators vary uniformly in the interval $[-1/2, 1/2]$. The onset of synchronization is not exactly at 0 – but close to 0.05. The small deviation from the theoretically predicted result does not seem to be a consequence of finite N because the critical threshold remains close to 0.05 even as N increases. 
 
 We have seen this ratio of the first two moments of the degree distribution several times earlier in the course, including in the friendship paradox, the epidemic threshold, and the critical threshold for random failures. When the second moment diverges, we saw in Lesson-9 that the epidemic threshold goes to 0, and earlier in this Lesson that the critical threshold for random failures goes to 1. Something similar happens here: networks with major hubs get easily synchronized, even with very minor coupling strength. 
 
@@ -403,8 +407,8 @@ The most challenging class of problems in network dynamics is related to Adaptiv
 
 Here, there are two dynamic processes that are coupled in a feedback loop, as shown in this illustration:
 
-A. The topology of the network changes over time, as a function of the dynamic state of the nodes,
-B. The state of the nodes and/or edges changes over time, as a function of the network topology.
+> - A. The topology of the network changes over time, as a function of the dynamic state of the nodes,
+> - B. The state of the nodes and/or edges changes over time, as a function of the network topology.
 
 In the illustration, we see a small network of three nodes. Each node can be in one of two states: grey and black. The state of a node depends on the state of its neighbor(s). But also whether two nodes will connect or disconnect depends on their current state. 
 
@@ -440,15 +444,17 @@ N agents are endowed with a continuous opinion o(t) that can vary between 0 and 
 Two agents, i and j can communicate with each other if they are connected by a link. 
 
 Two neighboring agents can communicate if their opinions are close enough, i.e., if
-|o(i,t) - o(j,t)| < d, where d is the tolerance range or threshold.
+$|o(i,t) - o(j,t)| < d$, where d is the tolerance range or threshold.
 
 In this case, the communication tends to bring the opinions even closer, according to the following "update rule":
 
-o(i,t+1) = o(i,t) + μ(o(j,t) - o(i,t))
-and
-o(j,t+1) = o(j,t) - μ(o(j,t) - o(i,t))
+$o(i,t+1) = o(i,t) + μ(o(j,t) - o(i,t))$
 
-where μ ∈ [0, 1/2] is a convergence parameter. Consider the case of μ = ½ that corresponds to i and j adopting the same intermediate opinion after communication. 
+and
+
+$o(j,t+1) = o(j,t) - μ(o(j,t) - o(i,t))$
+
+where $μ ∈ [0, 1/2]$ is a __convergence parameter__. Consider the case of μ = ½ that corresponds to i and j adopting the same intermediate opinion after communication. 
 
 The model considers two coexisting dynamical processes: local opinion convergence for agents whose opinions are within the tolerance range, and a rewiring process for agents whose opinions differ more. 
 
@@ -456,13 +462,13 @@ The relative frequencies of these two processes is quantified by the parameter w
 
 At each time step t, a node i and one of its neighbors j are chosen at random. 
 
-With probability w, an attempt to break the connection between i and j is made: if |o(i,t) - o(j,t)| > d, a new node k is chose at random and the link (i,j) is rewired to (i,k).
+- With probability w, an attempt to break the connection between i and j is made: if $|o(i,t) - o(j,t)| > d$, a new node k is chose at random and the link (i,j) is rewired to (i,k).
 
-With probability 1 − w on the other hand, the opinions evolve according to the previous update rule. if they are within the tolerance range. 
+- With probability 1 − w on the other hand, the opinions evolve according to the previous update rule. if they are within the tolerance range. 
 
-If w > 0, the dynamics stop when no link connects nodes with different opinions. This can correspond either to a single connected network in which all agents share the same opinion, or to several clusters representing different opinions. 
+> If w > 0, the dynamics stop when no link connects nodes with different opinions. This can correspond either to a single connected network in which all agents share the same opinion, or to several clusters representing different opinions. 
 
-For w = 0 on the other hand, the dynamics stops when neighboring agents either share the same opinion or differ of more than the tolerance d.
+> For w = 0 on the other hand, the dynamics stops when neighboring agents either share the same opinion or differ of more than the tolerance d.
 
 The model is described with the pseudocode shown in Figure (A). 
 
@@ -472,9 +478,9 @@ Figure (B) refers to the case of a static network without any rewiring, while Fi
 
 The evolution of the opinion of a few individuals is highlighted with color.
 
-When the interaction network is static, local convergence processes take place and lead to a large number of opinion clusters in the final state, with few macroscopic size opinion clusters and many small size groups: agents with similar opinions may be distant on the network and not be able to communicate. 
+When the interaction network is static, local convergence processes take place and lead to a large number of opinion clusters in the final state, with few macroscopic size opinion clusters and many small size groups: __agents with similar opinions may be distant on the network and not be able to communicate__. 
 
-Figure (C), which corresponds to an adaptive network is strikingly in contrast with the static case: no small groups are observed.
+Figure (C), which corresponds to an adaptive network is strikingly in contrast with the static case: __no small groups are observed__.
 
 The study of Kozma and Barrat showed the following results:
 
@@ -482,9 +488,9 @@ In the case of the static interaction network, two transitions are found: at lar
 
 In the case of the adaptive interaction network, i.e. when agents can break connections with neighbors with far apart opinions, the situation changes in various ways. 
 
-At large tolerance values, the polarization transition is shifted since rewiring makes it easier for a large connected cluster to be broken in various parts. The possibility of network topological change, therefore, renders global consensus more difficult to achieve. 
+At large tolerance values, the polarization transition is shifted since rewiring makes it easier for a large connected cluster to be broken in various parts. __The possibility of network topological change, therefore, renders global consensus more difficult to achieve__. 
 
-On the other hand, for smaller tolerance values, the number of clusters is drastically reduced since agents can more easily find other agents with whom to reach an agreement. A real polarized phase is thus obtained, and the transition to a fragmented state is even suppressed: extensive clusters are obtained even at very low tolerance.
+On the other hand, __for smaller tolerance values, the number of clusters is drastically reduced since agents can more easily find other agents with whom to reach an agreement. A real polarized phase is thus obtained__, and the transition to a fragmented state is even suppressed: extensive clusters are obtained even at very low tolerance.
 
 **Food For Thought**
 - Many people believe that online social networks such as Twitter lead to extreme polarization and the formation of "echo chambers". How would you explain this phenomenon using the previous model? 
@@ -501,7 +507,7 @@ Additionally, this structural change will influence future information transfers
 
 How often does this happen? The study by Antoniades and Dovrolis referenced here analyzed a large volume of Twitter data, searching for the addition of new links from L to S shortly after the retweeting of messages of S from R. 
 
-In absolute terms, the probability of such events is low: between 10^-4 to 10^-3, meaning that only about 1 out of 1000 to 10000 retweets of S lead to the creation of new links from a listener L to S. F
+In absolute terms, the probability of such events is low: between 10^-4 to 10^-3, meaning that only about 1 out of 1000 to 10000 retweets of S lead to the creation of new links from a listener L to S.
 
 Even though these adaptation events are infrequent, they are responsible for about 20% of the new edges on Twitter.
 
