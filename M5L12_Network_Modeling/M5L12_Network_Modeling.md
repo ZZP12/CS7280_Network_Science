@@ -268,7 +268,7 @@ This link cost is not our only consideration however. We also want to keep the p
 
 Note that because a new node connects to only one existing node, the resulting topology is a tree (and so there is only one path between any two nodes). A tree allows the network to be connected with the minimum number of links (n-1 links for n nodes).
 
-So, on one hand, we want to minimize the cost of the new connection, which is proportional to d_i,j, and on the other hand, we want to connect to a node j with the smallest possible h_j. How can we combine the previous two objectives? Note that they can be conflicting – the node with the smallest h_j may be quite far away from the new node-i.
+So, on one hand, we want to minimize the cost of the new connection, which is proportional to d_i,j, and on the other hand, we want to connect to a node j with the smallest possible $h_j$. How can we combine the previous two objectives? Note that they can be conflicting – the node with the smallest $h_j$ may be quite far away from the new node-i.
 
 One approach is to minimize a linear combination of these two metrics. So, when node-i arrives, it connects to the node-j that minimizes the following cost:
 
@@ -295,11 +295,11 @@ Now that you have some intuition about this model, think before you move to the 
 
 The previous model (and some variants of it) has been studied extensively. The mathematical analysis of the model is quite lengthy, however, at least for our purposes, and so let us focus on numerical results and some basic insight.
 
-- First, what happens when δ is so low that the distance term does not matter? The maximum possible distance between two nodes in a unit square is sqrt(2). If δ < 1 / sqrt(2), we have that $δd_{i,j} < 1$. So, for any new node, it is cheaper to connect directly to the center (which has h_j = 0) rather than any node with $h_j \geq 1$. In other words, when δ < 0.707, the resulting network has a _hub-and-spoke_ topology because every node connects directly to the center node (see leftmost plots in the visualization – N=10,000 nodes).
+- First, what happens when δ is so low that the distance term does not matter? The maximum possible distance between two nodes in a unit square is sqrt(2). If δ < 1 / sqrt(2), we have that $δd_{i,j} < 1$. So, for any new node, it is cheaper to connect directly to the center (which has $h_j$ = 0) rather than any node with $h_j \geq 1$. In other words, when δ < 0.707, the resulting network has a _hub-and-spoke_ topology because every node connects directly to the center node (see leftmost plots in the visualization – N=10,000 nodes).
 
-- On other hand, what happens if δ is so large that the distance term dominates over the path length h_j? When we have N random points on a unit square, the average distance between a point and its nearest neighbor scales with 1/sqrt(N) (do you see why?). The path length to the central node, on the other hand, scales slowly with N (logarithmically with N – recall that the network is a tree). So if $δ \gg \sqrt N$, we have that $δd_{i,j}$ dominates over the h_j term. In that case, a new node-i will choose to connect to the nearest node-j. The resulting network in this case has _an exponential degree distribution_, as it is highly unlikely that a node will be the nearest neighbor to many other nodes.
+- On other hand, what happens if δ is so large that the distance term dominates over the path length $h_j$? When we have N random points on a unit square, the average distance between a point and its nearest neighbor scales with 1/sqrt(N) (do you see why?). The path length to the central node, on the other hand, scales slowly with N (logarithmically with N – recall that the network is a tree). So if $δ \gg \sqrt N$, we have that $δd_{i,j}$ dominates over the $h_j$ term. In that case, a new node-i will choose to connect to the nearest node-j. The resulting network in this case has _an exponential degree distribution_, as it is highly unlikely that a node will be the nearest neighbor to many other nodes.
 
-- When δ is between these two extremes ($1/\sqrt 2$ and $\sqrt N$), the model produces topologies with a strong presence of hubs. The hubs connect to many other nearby nodes (i.e., the cost of those connections is quite low) and additionally the few hubs connect either directly to the center node or indirectly, through another hub node, to the center (i.e., the hubs have low h_j value). This hierarchical structure allows almost all nodes in the network to have a very low cost value $C_j$. The resulting degree distribution can be a _power-law_ – even though the exact shape of the distribution depends on the value of N and δ.
+- When δ is between these two extremes ($1/\sqrt 2$ and $\sqrt N$), the model produces topologies with a strong presence of hubs. The hubs connect to many other nearby nodes (i.e., the cost of those connections is quite low) and additionally the few hubs connect either directly to the center node or indirectly, through another hub node, to the center (i.e., the hubs have low $h_j$ value). This hierarchical structure allows almost all nodes in the network to have a very low cost value $C_j$. The resulting degree distribution can be a _power-law_ – even though the exact shape of the distribution depends on the value of N and δ.
 
 ![M5L12_Fig12](imgs/M5L12_Fig12.png)
 
@@ -365,9 +365,9 @@ Suppose that r is an internal node in D, and consider all node pairs for which r
 
 In the left dendrogram of the visualization, the internal node r that is labeled as “1/3” is the LCA of the following node pairs: (a,d), (b,d), (c,d) – and only one of those node pairs is connected (c with d). So $E_r=1$.
 
-Further, let and L_r be R_r the number of leaves in the left and right subtrees rooted at r.
+Further, let and $L_r$ be $R_r$ the number of leaves in the left and right subtrees rooted at r.
 
-In the previous example, L_r={a,b,c} and R_r={d}.
+In the previous example, $L_r$={a,b,c} and $R_r$={d}.
 
 Suppose that someone gives us a vector of probabilities {p_r}. Recall that the likelihood of a model is the probability that that model will produce the given data. So, the model likelihood is:
 
